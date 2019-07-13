@@ -15,6 +15,7 @@ public class InputField extends LinearLayout {
     private TextView textView;
     private EditText editText;
     private String label;
+    private Integer width;
     private int inputType;
 
     public InputField(Context context, String label,int inputType) {
@@ -24,11 +25,18 @@ public class InputField extends LinearLayout {
         init();
     }
 
+    public InputField(Context context, String label,int inputType, Integer width) {
+        super(context);
+        this.label = label;
+        this.inputType = inputType;
+        this.width = width;
+        init();
+    }
+
     private void init() {
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         setLayoutParams(layoutParams);
         setOrientation(VERTICAL);
-        setPadding(30, 0, 30, 0);
         textView = new TextView(getContext());
         textView.setText(label);
         addView(textView);
@@ -37,25 +45,7 @@ public class InputField extends LinearLayout {
         //Limitar unica linha input
         editText.setSingleLine();
         editText.setInputType(InputType.TYPE_CLASS_TEXT | inputType);
-        editText.setPadding(10, 0, 10, 0);
-//        editText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if(!(s.toString().matches("[\\w]{1,}@[\\w]{1,}+(.[\\w]{2,})?"))){
-//                    Log.d("DEVELOPER", s+" não é um email válido!");
-//                }
-//            }
-//        });
+        editText.setWidth(width);
         addView(editText);
     }
 
