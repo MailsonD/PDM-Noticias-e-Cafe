@@ -25,7 +25,7 @@ public class InputField extends LinearLayout {
     }
 
     private void init() {
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         setLayoutParams(layoutParams);
         setOrientation(VERTICAL);
         setPadding(30, 0, 30, 0);

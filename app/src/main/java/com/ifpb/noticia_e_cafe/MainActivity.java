@@ -25,10 +25,10 @@ public class MainActivity extends AppCompatActivity {
         final InputField inputField = new InputField(this,"Password:", InputType.TYPE_TEXT_VARIATION_PASSWORD);
         linearLayout.addView(inputField);
 
-        final ButtonComponent buttonComponent1 = new ButtonComponent(this, "Teste1", Color.rgb(50,205,50), 60, 60);
+        final ButtonComponent buttonComponent1 = new ButtonComponent(this, "Teste1", 100, Color.rgb(50,205,50));
         linearLayout.addView(buttonComponent1);
 
-        final ButtonComponent buttonComponent2 = new ButtonComponent(this, "Teste2", Color.rgb(50,205,50), 60, 60);
+        final ButtonComponent buttonComponent2 = new ButtonComponent(this, "Teste2", 100, Color.rgb(50,205,50));
         linearLayout.addView(buttonComponent2);
 
         buttonComponent1.setOnClickAction(new View.OnClickListener() {
