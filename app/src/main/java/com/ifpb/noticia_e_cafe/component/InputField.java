@@ -46,6 +46,7 @@ public class InputField extends LinearLayout {
         editText.setSingleLine();
         editText.setInputType(InputType.TYPE_CLASS_TEXT | inputType);
         editText.setWidth(width);
+
         addView(editText);
     }
 

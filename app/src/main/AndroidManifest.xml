@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".tela.LoginActivity">
+        <activity android:name=".tela.TelaLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

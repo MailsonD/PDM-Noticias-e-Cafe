@@ -1,5 +1,6 @@
 package com.ifpb.noticia_e_cafe.tela;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
@@ -53,24 +55,20 @@ public class TelaCadastro extends AppCompatActivity {
         final ButtonComponent cadastrar = new ButtonComponent(this, "Cadastrar", width/3, Color.rgb(0,128,0));
         linearLayoutButtons.addView(cadastrar);
 
-        cancelar.setOnClickAction(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Oi", "Cancelou!");
-            }
-        });
+        cancelar.setOnClickAction((v) -> startActivity(new Intent(this,TelaLogin.class)));
 
         cadastrar.setOnClickAction(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Oi", "Cadastrou");
-            }
-        });
-
-        cadastrar.setOnClickListener(new View.OnClickListener() { // não usar este método ele é o onClickListener do layout e não do botão
-            @Override
-            public void onClick(View v) {
-                Log.d("Ola", "Foi");
+                if(nome.getValue().isEmpty()){
+                    Toast.makeText(TelaCadastro.this, "Informe o seu nome!", Toast.LENGTH_SHORT).show();
+                }else if(!(email.getValue().matches("\\w{2,}@\\w{2,}(.\\w{2,})+"))){
+                    Toast.makeText(TelaCadastro.this, "Informe um email válido!", Toast.LENGTH_SHORT).show();
+                }else if(senha.getValue().length()<8){
+                    Toast.makeText(TelaCadastro.this, "Informe uma senha de no mínimo 8 caracteres.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(TelaCadastro.this, "Foi", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

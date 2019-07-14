@@ -19,7 +19,7 @@ import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
-public class LoginActivity extends AppCompatActivity {
+public class TelaLogin extends AppCompatActivity {
 
     private LinearLayout layoutMain;
     private LinearLayout layoutImage;
