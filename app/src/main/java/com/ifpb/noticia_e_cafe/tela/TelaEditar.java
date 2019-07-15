@@ -1,17 +1,24 @@
 package com.ifpb.noticia_e_cafe.tela;
 
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
+/**
+ * @author Leanderson-Coelho
+ * **/
 public class TelaEditar extends AppCompatActivity {
 
     private LinearLayout layoutInputs;
@@ -27,6 +34,7 @@ public class TelaEditar extends AppCompatActivity {
 
     public TelaEditar(){}
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +61,7 @@ public class TelaEditar extends AppCompatActivity {
         this.layoutMain.addView(nomeTela);
         this.layoutMain.addView(layoutInputs);
         this.layoutMain.addView(layoutButtons);
-
+        setTitle("Tela de edição");
     }
 
     private void construirLayoutInputs(){
