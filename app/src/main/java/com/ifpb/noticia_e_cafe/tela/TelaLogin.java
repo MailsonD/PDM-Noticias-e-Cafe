@@ -105,9 +105,7 @@ public class TelaLogin extends AppCompatActivity {
 
         //=========== ADICIONANDO EVENTOS ONCLICK ==============
 
-        btnConfirmar.setOnClickAction(
-                (v) -> Log.d("DEBUGANDO_SAPORRA","MeuBotão")
-        );
+        btnConfirmar.setOnClickAction(v -> startActivity(new Intent(this,TelaPrincipal.class)));
 
         //========= ADICIONANDO COMPONENTES AO LAYOUT =========
 

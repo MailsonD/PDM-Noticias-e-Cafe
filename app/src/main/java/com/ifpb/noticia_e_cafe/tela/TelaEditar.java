@@ -1,10 +1,12 @@
 package com.ifpb.noticia_e_cafe.tela;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -83,6 +85,8 @@ public class TelaEditar extends AppCompatActivity {
         //Botões
         this.salvar = new ButtonComponent(this,"Salvar",this.width/2,Color.rgb(0,128,0));
         this.cancelar = new ButtonComponent(this,"Cancelar",this.width/2, Color.rgb(255,0,0));
+
+        this.cancelar.setOnClickAction((v) -> startActivity(new Intent(this,TelaPrincipal.class)));
 
         this.layoutButtons.addView(cancelar);
         this.layoutButtons.addView(salvar);
