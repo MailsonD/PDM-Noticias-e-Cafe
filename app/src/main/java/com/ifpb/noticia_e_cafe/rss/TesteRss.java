@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -116,12 +117,12 @@ public class TesteRss extends AppCompatActivity {
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.CONTEUDO.value())){
                             if (insideItem) {
-                                noticia.setConteudo(xpp.nextText());
+                                noticia.setConteudo(Html.fromHtml(xpp.nextText()).toString());
 //                                links.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.DESCRICAO.value())){
                             if (insideItem) {
-                                noticia.setDecricao(xpp.nextText());
+                                noticia.setDecricao(Html.fromHtml(xpp.nextText()).toString());
 //                                links.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.LINK.value())){
@@ -241,7 +242,7 @@ public class TesteRss extends AppCompatActivity {
         TITULO("title"),
         LINK("link"),
         PUBLICACAO("pubdate"),
-        DESCRICAO("desciption"),
+        DESCRICAO("description"),
         CONTEUDO("content:encoded")
         ;
 
