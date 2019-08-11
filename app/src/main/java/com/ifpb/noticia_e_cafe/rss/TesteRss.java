@@ -26,6 +26,7 @@ public class TesteRss extends AppCompatActivity {
 
     ArrayList<String> titles = new ArrayList<>();
     ArrayList<String> links = new ArrayList<>();
+    ArrayList<Noticia> noticias = new ArrayList<>();
     LinearLayout layoutMain;
     ListView listView;
 
@@ -56,6 +57,7 @@ public class TesteRss extends AppCompatActivity {
 
         new ProcessaEmBackground().execute();
 
+        setContentView(layoutMain);
     }
 
     private InputStream getInputStream(URL url){
@@ -96,26 +98,43 @@ public class TesteRss extends AppCompatActivity {
 
                 int eventType = xpp.getEventType();
 
+                Noticia noticia= new Noticia();
                 while(eventType != XmlPullParser.END_DOCUMENT){
                     if(eventType == XmlPullParser.START_TAG){
-                        if(xpp.getName().equalsIgnoreCase("item")){
+                        if(xpp.getName().equalsIgnoreCase(Item.ABERTURA.value())){
+                            noticia = new Noticia();
                             insideItem = true;
-                        }else if (xpp.getName().equalsIgnoreCase("title")){
+                        }else if (xpp.getName().equalsIgnoreCase(Item.TITULO.value())){
                             if (insideItem){
-                                // extract the text between <title> and </title>
-                                titles.add(xpp.nextText());
+                                noticia.setTitulo(xpp.nextText());
+//                                titles.add(xpp.nextText());
                             }
-                        }else if (xpp.getName().equalsIgnoreCase("link")){
+                        }else if (xpp.getName().equalsIgnoreCase(Item.PUBLICACAO.value())){
                             if (insideItem) {
-                                // extract the text between <link> and </link>
-                                links.add(xpp.nextText());
+                                noticia.setDataPublicacao(xpp.nextText());
+//                                links.add(xpp.nextText());
+                            }
+                        }else if (xpp.getName().equalsIgnoreCase(Item.CONTEUDO.value())){
+                            if (insideItem) {
+                                noticia.setConteudo(xpp.nextText());
+//                                links.add(xpp.nextText());
+                            }
+                        }else if (xpp.getName().equalsIgnoreCase(Item.DESCRICAO.value())){
+                            if (insideItem) {
+                                noticia.setDecricao(xpp.nextText());
+//                                links.add(xpp.nextText());
+                            }
+                        }else if (xpp.getName().equalsIgnoreCase(Item.LINK.value())){
+                            if (insideItem) {
+                                noticia.setLink(xpp.nextText());
+//                                links.add(xpp.nextText());
                             }
                         }
 
-                    }else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")){
+                    }else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase(Item.ABERTURA.value())){
                         insideItem = false;
+                        noticias.add(noticia);
                     }
-
                     eventType = xpp.next();
                 }
 
@@ -130,7 +149,10 @@ public class TesteRss extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(TesteRss.this, android.R.layout.simple_list_item_1, titles);
+            ArrayAdapter<Noticia> adapter = new ArrayAdapter<Noticia>(TesteRss.this,
+                    android.R.layout.simple_list_item_1,
+                    noticias
+            );
 
             for (String title : titles) {
                 Log.d("Testando Saporra", title);
@@ -140,5 +162,99 @@ public class TesteRss extends AppCompatActivity {
 
             progressDialog.dismiss();
         }
+    }
+
+    private class Noticia{
+
+        private String titulo;
+        private String link;
+        private String dataPublicacao;
+        private String decricao;
+        private String conteudo;
+
+        public Noticia(String titulo, String link, String dataPublicacao, String decricao, String conteudo) {
+            this.titulo = titulo;
+            this.link = link;
+            this.dataPublicacao = dataPublicacao;
+            this.decricao = decricao;
+            this.conteudo = conteudo;
+        }
+
+        public Noticia() {
+
+        }
+
+        public String getTitulo() {
+            return titulo;
+        }
+
+        public void setTitulo(String titulo) {
+            this.titulo = titulo;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public String getDataPublicacao() {
+            return dataPublicacao;
+        }
+
+        public void setDataPublicacao(String dataPublicacao) {
+            this.dataPublicacao = dataPublicacao;
+        }
+
+        public String getDecricao() {
+            return decricao;
+        }
+
+        public void setDecricao(String decricao) {
+            this.decricao = decricao;
+        }
+
+        public String getConteudo() {
+            return conteudo;
+        }
+
+        public void setConteudo(String conteudo) {
+            this.conteudo = conteudo;
+        }
+
+        @Override
+        public String toString() {
+            return "Noticia{" +
+                    "titulo='" + titulo + '\'' +
+                    ", link='" + link + '\'' +
+                    ", dataPublicacao='" + dataPublicacao + '\'' +
+                    ", decricao='" + decricao + '\'' +
+                    ", conteudo='" + conteudo + '\'' +
+                    '}';
+        }
+    }
+
+    private enum Item{
+        ABERTURA("item"),
+        TITULO("title"),
+        LINK("link"),
+        PUBLICACAO("pubdate"),
+        DESCRICAO("desciption"),
+        CONTEUDO("content:encoded")
+        ;
+
+
+        private final String value;
+
+        Item(String value){
+            this.value = value;
+        }
+
+        public String value(){
+            return this.value;
+        }
+
     }
 }
