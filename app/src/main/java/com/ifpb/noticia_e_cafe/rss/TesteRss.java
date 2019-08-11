@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class TesteRss extends AppCompatActivity {
 
-    ArrayList<String> titles = new ArrayList<>();
+//    ArrayList<String> titles = new ArrayList<>();
     ArrayList<String> links = new ArrayList<>();
 //    ArrayList<Spanned> conteudos = new ArrayList<>();
     ArrayList<Noticia> noticias = new ArrayList<>();
@@ -173,6 +173,7 @@ public class TesteRss extends AppCompatActivity {
             listView.setAdapter(adapter);
 
             URLImageParser p = new URLImageParser(textView,TesteRss.this);
+
             Spanned testeHtml = Html.fromHtml(s, p, null);
             textView.setText(testeHtml);
 
