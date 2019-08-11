@@ -1,12 +1,17 @@
 package com.ifpb.noticia_e_cafe.rss;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -27,13 +33,17 @@ public class TesteRss extends AppCompatActivity {
 
     ArrayList<String> titles = new ArrayList<>();
     ArrayList<String> links = new ArrayList<>();
+//    ArrayList<Spanned> conteudos = new ArrayList<>();
     ArrayList<Noticia> noticias = new ArrayList<>();
     LinearLayout layoutMain;
     ListView listView;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        textView = new TextView(this);
 
         layoutMain = new LinearLayout(this);
         layoutMain.setLayoutParams(new LinearLayout.LayoutParams(
@@ -45,7 +55,8 @@ public class TesteRss extends AppCompatActivity {
 
         listView = new ListView(this);
 
-        layoutMain.addView(listView);
+//        layoutMain.addView(listView);
+        layoutMain.addView(textView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,6 +95,7 @@ public class TesteRss extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Integer... integers) {
+            String html = null;
             try{
                 URL url = new URL("http://uirauna.net/feed/");
 
@@ -117,7 +129,9 @@ public class TesteRss extends AppCompatActivity {
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.CONTEUDO.value())){
                             if (insideItem) {
-                                noticia.setConteudo(Html.fromHtml(xpp.nextText()).toString());
+                                html = xpp.nextText();
+                                noticia.setConteudo(Html.fromHtml(html).toString());
+//                                conteudos.add(Html.fromHtml(xpp.nextText()));
 //                                links.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.DESCRICAO.value())){
@@ -143,7 +157,7 @@ public class TesteRss extends AppCompatActivity {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            return null;
+            return html;
         }
 
         @Override
@@ -155,11 +169,12 @@ public class TesteRss extends AppCompatActivity {
                     noticias
             );
 
-            for (String title : titles) {
-                Log.d("Testando Saporra", title);
-            }
 
             listView.setAdapter(adapter);
+
+            URLImageParser p = new URLImageParser(textView,TesteRss.this);
+            Spanned testeHtml = Html.fromHtml(s, p, null);
+            textView.setText(testeHtml);
 
             progressDialog.dismiss();
         }
@@ -172,6 +187,7 @@ public class TesteRss extends AppCompatActivity {
         private String dataPublicacao;
         private String decricao;
         private String conteudo;
+        private String img;
 
         public Noticia(String titulo, String link, String dataPublicacao, String decricao, String conteudo) {
             this.titulo = titulo;
@@ -179,6 +195,15 @@ public class TesteRss extends AppCompatActivity {
             this.dataPublicacao = dataPublicacao;
             this.decricao = decricao;
             this.conteudo = conteudo;
+        }
+
+        public Noticia(String titulo, String link, String dataPublicacao, String decricao, String conteudo, String img) {
+            this.titulo = titulo;
+            this.link = link;
+            this.dataPublicacao = dataPublicacao;
+            this.decricao = decricao;
+            this.conteudo = conteudo;
+            this.img = img;
         }
 
         public Noticia() {
@@ -225,6 +250,14 @@ public class TesteRss extends AppCompatActivity {
             this.conteudo = conteudo;
         }
 
+        public String getImg() {
+            return img;
+        }
+
+        public void setImg(String img) {
+            this.img = img;
+        }
+
         @Override
         public String toString() {
             return "Noticia{" +
@@ -233,6 +266,7 @@ public class TesteRss extends AppCompatActivity {
                     ", dataPublicacao='" + dataPublicacao + '\'' +
                     ", decricao='" + decricao + '\'' +
                     ", conteudo='" + conteudo + '\'' +
+                    ", img='" + img + '\'' +
                     '}';
         }
     }
@@ -257,5 +291,92 @@ public class TesteRss extends AppCompatActivity {
             return this.value;
         }
 
+    }
+
+    public class URLDrawable extends BitmapDrawable {
+        // the drawable that you need to set, you could set the initial drawing
+        // with the loading image if you need to
+        protected Drawable drawable;
+
+        @Override
+        public void draw(Canvas canvas) {
+            // override the draw to facilitate refresh function later
+            if(drawable != null) {
+                drawable.draw(canvas);
+            }
+        }
+    }
+
+    public class URLImageParser implements Html.ImageGetter {
+        Context c;
+        View container;
+
+        /***
+         * Construct the URLImageParser which will execute AsyncTask and refresh the container
+         * @param t
+         * @param c
+         */
+        public URLImageParser(View t, Context c) {
+            this.c = c;
+            this.container = t;
+        }
+
+        public Drawable getDrawable(String source) {
+            URLDrawable urlDrawable = new URLDrawable();
+
+            // get the actual source
+            ImageGetterAsyncTask asyncTask =
+                    new ImageGetterAsyncTask( urlDrawable);
+
+            asyncTask.execute(source);
+
+            // return reference to URLDrawable where I will change with actual image from
+            // the src tag
+            return urlDrawable;
+        }
+
+        public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable>  {
+            URLDrawable urlDrawable;
+
+            public ImageGetterAsyncTask(URLDrawable d) {
+                this.urlDrawable = d;
+            }
+
+            @Override
+            protected Drawable doInBackground(String... params) {
+                String source = params[0];
+                return fetchDrawable(source);
+            }
+
+            @Override
+            protected void onPostExecute(Drawable result) {
+                // set the correct bound according to the result from HTTP call
+                urlDrawable.setBounds(0, 0, result.getIntrinsicWidth(), result.getIntrinsicHeight());
+
+                // change the reference of the current drawable to the result
+                // from the HTTP call
+                urlDrawable.drawable = result;
+
+                // redraw the image by invalidating the container
+                URLImageParser.this.container.invalidate();
+            }
+
+            /***
+             * Get the Drawable from URL
+             * @param urlString
+             * @return
+             */
+            public Drawable fetchDrawable(String urlString) {
+                try {
+                    InputStream is = getInputStream(new URL(urlString));
+                    Drawable drawable = Drawable.createFromStream(is, "src");
+                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                    return drawable;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+
+        }
     }
 }
