@@ -3,6 +3,9 @@ package com.ifpb.noticia_e_cafe.rss;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,6 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TesteRss extends AppCompatActivity {
 
@@ -43,7 +48,8 @@ public class TesteRss extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        textView = new TextView(this);
+//        textView = new TextView(this);
+        listView = new ListView(this);
 
         layoutMain = new LinearLayout(this);
         layoutMain.setLayoutParams(new LinearLayout.LayoutParams(
@@ -53,10 +59,10 @@ public class TesteRss extends AppCompatActivity {
         layoutMain.setPadding(0,0,0,0);
         layoutMain.setOrientation(LinearLayout.VERTICAL);
 
-        listView = new ListView(this);
+//        listView = new ListView(this);
 
-//        layoutMain.addView(listView);
-        layoutMain.addView(textView);
+        layoutMain.addView(listView);
+//        layoutMain.addView(textView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -82,7 +88,42 @@ public class TesteRss extends AppCompatActivity {
 
     public class ProcessaEmBackground extends AsyncTask<Integer,Void,String>{
 
+        private final Pattern PATTERN = Pattern.compile("<img .*\\/>");
+        private final Pattern PATTERN_SRC = Pattern.compile("http.+\\.[a-z]*\"");
         ProgressDialog progressDialog = new ProgressDialog(TesteRss.this);
+
+        public Drawable gerarDrawable(String urlString) {
+            try {
+                InputStream is = getInputStream(new URL(urlString));
+                Bitmap x = BitmapFactory.decodeStream(is);
+                Drawable drawable = new BitmapDrawable(Resources.getSystem(), x);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                return drawable;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public String encontraImg(String texto) {
+            Matcher matcher = PATTERN.matcher(texto);
+            if(matcher.find()){
+                String img = matcher.group(0);
+
+//                Log.d("SAPORRA","Encontro/ img: " + img);
+                Matcher matcheSrc = PATTERN_SRC.matcher(img);
+                if(matcheSrc.find()){
+                    String src = matcheSrc.group(0);
+                    src = src.substring(0,src.length()-1);
+//                    Log.d("SAPORRA","Encontrou o src: " + src);
+                    return src;
+                }
+
+            } else {
+                Log.d("SAPORRA","Não encontrou.");
+
+            }
+            return null;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -120,29 +161,24 @@ public class TesteRss extends AppCompatActivity {
                         }else if (xpp.getName().equalsIgnoreCase(Item.TITULO.value())){
                             if (insideItem){
                                 noticia.setTitulo(xpp.nextText());
-//                                titles.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.PUBLICACAO.value())){
                             if (insideItem) {
                                 noticia.setDataPublicacao(xpp.nextText());
-//                                links.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.CONTEUDO.value())){
                             if (insideItem) {
                                 html = xpp.nextText();
+                                noticia.setImg(gerarDrawable(encontraImg(html)));
                                 noticia.setConteudo(Html.fromHtml(html).toString());
-//                                conteudos.add(Html.fromHtml(xpp.nextText()));
-//                                links.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.DESCRICAO.value())){
                             if (insideItem) {
                                 noticia.setDecricao(Html.fromHtml(xpp.nextText()).toString());
-//                                links.add(xpp.nextText());
                             }
                         }else if (xpp.getName().equalsIgnoreCase(Item.LINK.value())){
                             if (insideItem) {
                                 noticia.setLink(xpp.nextText());
-//                                links.add(xpp.nextText());
                             }
                         }
 
@@ -172,10 +208,10 @@ public class TesteRss extends AppCompatActivity {
 
             listView.setAdapter(adapter);
 
-            URLImageParser p = new URLImageParser(textView,TesteRss.this);
+//            URLImageParser p = new URLImageParser(textView,TesteRss.this);
 
-            Spanned testeHtml = Html.fromHtml(s, p, null);
-            textView.setText(testeHtml);
+//            Spanned testeHtml = Html.fromHtml(s, p, null);
+//            textView.setText(testeHtml);
 
             progressDialog.dismiss();
         }
@@ -188,7 +224,7 @@ public class TesteRss extends AppCompatActivity {
         private String dataPublicacao;
         private String decricao;
         private String conteudo;
-        private String img;
+        private Drawable img;
 
         public Noticia(String titulo, String link, String dataPublicacao, String decricao, String conteudo) {
             this.titulo = titulo;
@@ -198,7 +234,7 @@ public class TesteRss extends AppCompatActivity {
             this.conteudo = conteudo;
         }
 
-        public Noticia(String titulo, String link, String dataPublicacao, String decricao, String conteudo, String img) {
+        public Noticia(String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img) {
             this.titulo = titulo;
             this.link = link;
             this.dataPublicacao = dataPublicacao;
@@ -251,11 +287,11 @@ public class TesteRss extends AppCompatActivity {
             this.conteudo = conteudo;
         }
 
-        public String getImg() {
+        public Drawable getImg() {
             return img;
         }
 
-        public void setImg(String img) {
+        public void setImg(Drawable img) {
             this.img = img;
         }
 
