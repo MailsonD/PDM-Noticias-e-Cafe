@@ -96,9 +96,7 @@ public class TesteRss extends AppCompatActivity {
             try {
                 InputStream is = getInputStream(new URL(urlString));
                 Bitmap x = BitmapFactory.decodeStream(is);
-                Drawable drawable = new BitmapDrawable(Resources.getSystem(), x);
-                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                return drawable;
+                return new BitmapDrawable(Resources.getSystem(), x);
             } catch (Exception e) {
                 return null;
             }
