@@ -1,4 +1,4 @@
-package com.ifpb.noticia_e_cafe.noticias;
+package com.ifpb.noticia_e_cafe.entities;
 
 import android.graphics.drawable.Drawable;
 

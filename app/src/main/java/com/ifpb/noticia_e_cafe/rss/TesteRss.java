@@ -179,18 +179,6 @@ public class TesteRss extends AppCompatActivity {
                     }else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase(Item.ABERTURA.value())){
                         insideItem = false;
                         noticias.add(noticia);
-//                        ImageView imageView = new ImageView(TesteRss.this);
-//                        imageView.setImageDrawable(noticia.getImg());
-//                        noticeComponents.add(
-//                                new NoticeComponent(
-//                                        TesteRss.this,
-//                                        TesteRss.this.getWindowManager(),
-//                                        noticia.getTitulo(),
-//                                        noticia.getDecricao(),
-//                                        noticia.getDataPublicacao(),
-//                                        imageView
-//                                )
-//                        );
                     }
                     eventType = xpp.next();
                 }
