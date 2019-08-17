@@ -10,20 +10,14 @@ import android.widget.Toolbar;
 
 
 public class NavBar extends LinearLayout {
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-//    private NavigationView navigationView;
 
-    public NavBar(Context context, String label, int inputType) {
+    public NavBar(Context context, String label) {
         super(context);
         init();
     }
 
     private void init() {
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        setLayoutParams(layoutParams);
-        setOrientation(VERTICAL);
-//        toolbar.
+
     }
 
 }
