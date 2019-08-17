@@ -20,10 +20,11 @@ public class CreateConnectionUrl {
      */
     public static InputStream getInputStream(URL url) throws ConnectionUrlException {
         try {
+            Log.i("APP_INFO","Abrindo uma conxão com a url: "+url.getPath());
             return url.openConnection().getInputStream();
         } catch (Exception e) {
-            Log.d("ERRO","Houver um erro de conexão com a url: "+url.getPath());
-            Log.d("ERRO",e.getMessage());
+            Log.d("APP_ERRO","Houver um erro de conexão com a url: "+url.getPath());
+            Log.d("APP_ERRO",e.getMessage());
             throw new ConnectionUrlException("Houve uma falha ao conectar com a url desejada");
         }
     }

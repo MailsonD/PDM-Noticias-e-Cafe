@@ -24,12 +24,13 @@ public class DrawableCreator {
      */
     public static Drawable gerarDrawable(URL url) throws DrawableCreatorExcpetion {
         try {
+            Log.i("APP_INFO","Gerando drawable para url: "+url.getPath());
             InputStream is = CreateConnectionUrl.getInputStream(url);
             Bitmap x = BitmapFactory.decodeStream(is);
             return new BitmapDrawable(Resources.getSystem(), x);
         } catch (Exception e) {
-            Log.d("ERROR","Houve um erro ao gerar o drawable pela URL enviada");
-            Log.d("ERROR",e.getMessage());
+            Log.e("APP_ERROR","Houve um erro ao gerar o drawable pela URL enviada");
+            Log.e("APP_ERROR",e.getMessage());
             throw new DrawableCreatorExcpetion("Houve uma falha ao conectar com a url desejada");
         }
     }
