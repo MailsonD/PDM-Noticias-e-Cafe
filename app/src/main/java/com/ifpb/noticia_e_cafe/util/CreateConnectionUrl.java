@@ -13,16 +13,17 @@ import java.net.URL;
 public class CreateConnectionUrl {
 
     /**
-     * public static InputStream -> Esta função receberá uma URL e a partir dela irá abrir uma conexão em InputStream para a URL enviada
+     * Método que receberá uma URL e a partir dela irá abrir uma conexão em InputStream com a URL enviada
      * @param url -> Url para a qual se deseja abrir um InputStream
-     * @return InputStream ->
-     * @throws ConnectionUrlException
+     * @return InputStream -> O InputStream aberto através da URL enviada
+     * @throws ConnectionUrlException caso ocorra algum problema na abertura da conexão com a URL
      */
     public static InputStream getInputStream(URL url) throws ConnectionUrlException {
         try {
             return url.openConnection().getInputStream();
         } catch (Exception e) {
             Log.d("ERRO","Houver um erro de conexão com a url: "+url.getPath());
+            Log.d("ERRO",e.getMessage());
             throw new ConnectionUrlException("Houve uma falha ao conectar com a url desejada");
         }
     }
