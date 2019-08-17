@@ -1,5 +1,6 @@
 package com.ifpb.noticia_e_cafe.rss;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +19,16 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.ifpb.noticia_e_cafe.component.NoticeComponent;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -31,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +47,7 @@ public class TesteRss extends AppCompatActivity {
     ArrayList<String> links = new ArrayList<>();
 //    ArrayList<Spanned> conteudos = new ArrayList<>();
     ArrayList<Noticia> noticias = new ArrayList<>();
+    ArrayList<NoticeComponent> noticeComponents = new ArrayList<>();
     LinearLayout layoutMain;
     ListView listView;
     TextView textView;
@@ -64,14 +72,14 @@ public class TesteRss extends AppCompatActivity {
         layoutMain.addView(listView);
 //        layoutMain.addView(textView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri uri = Uri.parse(links.get(position));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                TesteRss.this.startActivity(intent);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Uri uri = Uri.parse(links.get(position));
+//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                TesteRss.this.startActivity(intent);
+//            }
+//        });
 
         new ProcessaEmBackground().execute();
 
@@ -183,6 +191,18 @@ public class TesteRss extends AppCompatActivity {
                     }else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase(Item.ABERTURA.value())){
                         insideItem = false;
                         noticias.add(noticia);
+//                        ImageView imageView = new ImageView(TesteRss.this);
+//                        imageView.setImageDrawable(noticia.getImg());
+//                        noticeComponents.add(
+//                                new NoticeComponent(
+//                                        TesteRss.this,
+//                                        TesteRss.this.getWindowManager(),
+//                                        noticia.getTitulo(),
+//                                        noticia.getDecricao(),
+//                                        noticia.getDataPublicacao(),
+//                                        imageView
+//                                )
+//                        );
                     }
                     eventType = xpp.next();
                 }
@@ -198,18 +218,19 @@ public class TesteRss extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            ArrayAdapter<Noticia> adapter = new ArrayAdapter<Noticia>(TesteRss.this,
-                    android.R.layout.simple_list_item_1,
-                    noticias
-            );
+//            ArrayAdapter<Noticia> adapter = new ArrayAdapter<Noticia>(TesteRss.this,
+//                    android.R.layout.simple_list_item_1,
+//                    noticias
+//            );
+//            ArrayAdapter<NoticeComponent> adapter = new ArrayAdapter<NoticeComponent>(TesteRss.this,
+//                    android.R.layout.simple_list_item_1,
+//                    noticeComponents
+//            );
+            NoticiaAdapter adapter = new NoticiaAdapter(TesteRss.this,noticias);
 
 
             listView.setAdapter(adapter);
 
-//            URLImageParser p = new URLImageParser(textView,TesteRss.this);
-
-//            Spanned testeHtml = Html.fromHtml(s, p, null);
-//            textView.setText(testeHtml);
 
             progressDialog.dismiss();
         }
@@ -326,6 +347,45 @@ public class TesteRss extends AppCompatActivity {
             return this.value;
         }
 
+    }
+
+    private class NoticiaAdapter extends BaseAdapter {
+
+        private final List<Noticia> noticias;
+        private final Activity act;
+
+        public NoticiaAdapter(Activity act, List<Noticia> noticias) {
+            Log.d("SAPORRA","Existems "+noticias.size()+" Noticias");
+            this.noticias = noticias;
+            this.act = act;
+        }
+
+        @Override
+        public int getCount() {
+            return noticias.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return noticias.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            Noticia noticia = noticias.get(i);
+            Log.d("SAPORRA","Noticia "+i);
+            ImageView imageView = new ImageView(act);
+            imageView.setImageDrawable(noticia.getImg());
+            return new NoticeComponent(act,noticia.getTitulo(),noticia.getDecricao(),noticia.getDataPublicacao(),imageView);
+//            TextView textView = new TextView(act);
+//            textView.setText(noticia.getConteudo());
+//            return textView;
+        }
     }
 
     public class URLDrawable extends BitmapDrawable {
