@@ -48,14 +48,7 @@ public class NoticiaAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         //Constroi o componente de visualização de noticia para cada noticia dentro de um ListView
         Noticia noticia = noticias.get(i);
-        if(noticia.getImg() != null){
-            //Componente com imagem
-            ImageView imageView = new ImageView(activity);
-            imageView.setImageDrawable(noticia.getImg());
-            return new NoticeComponent(activity,noticia.getTitulo(),noticia.getDecricao(),noticia.getDataPublicacao(),imageView);
-        }
-        //Componente sem imagem
-        return new NoticeComponent(activity,noticia.getTitulo(),noticia.getDecricao(),noticia.getDataPublicacao());
+        return new NoticeComponent(activity,noticia);
 
     }
 }

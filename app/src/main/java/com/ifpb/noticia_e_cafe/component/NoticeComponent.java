@@ -37,11 +37,12 @@ public class NoticeComponent extends LinearLayout {
     public NoticeComponent(Activity tela, Noticia noticia) {
         super(tela);
         this.init(tela, noticia);
+        Log.i("APP_INFO","Criando componente para noticia de guid: "+noticia.getGuid());
         //definindo layout
         if(noticia.getImg() != null){
-            this.noticeWithoutLayoutImage(tela);
-        }else{
             this.noticeWithLayoutImage(tela, noticia.getImg());
+        }else{
+            this.noticeWithoutLayoutImage(tela);
         }
     }
 
@@ -82,7 +83,6 @@ public class NoticeComponent extends LinearLayout {
         this.layoutInformacoes = new LinearLayout(context);
         this.layoutInformacoes.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         this.layoutInformacoes.setOrientation(VERTICAL);
-        this.layoutImagem.setPadding(10,10,10,10);
         addView(this.layoutInformacoes);
         this.layoutInformacoes.addView(this.titulo);
         this.layoutInformacoes.addView(this.descricao);

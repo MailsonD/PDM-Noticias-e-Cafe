@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class Noticia{
 
-    private int id;
+    private String guid;
     private String siteFonte;
     private String titulo;
     private String link;
@@ -19,8 +19,8 @@ public class Noticia{
     private String conteudo;
     private Drawable img;
 
-    public Noticia(int id, String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img) {
-        this.id = id;
+    public Noticia(String guid, String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img) {
+        this.guid = guid;
         this.siteFonte = siteFonte;
         this.titulo = titulo;
         this.link = link;
@@ -101,12 +101,12 @@ public class Noticia{
         this.img = img;
     }
 
-    public int getId() {
-        return id;
+    public String getGuid() {
+        return guid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     public String getSiteFonte() {
@@ -122,7 +122,7 @@ public class Noticia{
         if (this == o) return true;
         if (!(o instanceof Noticia)) return false;
         Noticia noticia = (Noticia) o;
-        return getId() == noticia.getId() &&
+        return getGuid() == noticia.getGuid() &&
                 Objects.equals(getSiteFonte(), noticia.getSiteFonte()) &&
                 Objects.equals(getTitulo(), noticia.getTitulo()) &&
                 Objects.equals(getLink(), noticia.getLink()) &&
@@ -134,13 +134,13 @@ public class Noticia{
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSiteFonte(), getTitulo(), getLink(), getDataPublicacao(), getDecricao(), getConteudo(), getImg());
+        return Objects.hash(getGuid(), getSiteFonte(), getTitulo(), getLink(), getDataPublicacao(), getDecricao(), getConteudo(), getImg());
     }
 
     @Override
     public String toString() {
         return "Noticia{" +
-                "id=" + id +
+                "guid=" + guid +
                 ", siteFonte='" + siteFonte + '\'' +
                 ", titulo='" + titulo + '\'' +
                 ", link='" + link + '\'' +
