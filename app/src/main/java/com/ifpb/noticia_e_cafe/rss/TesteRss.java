@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
 public class TesteRss extends AppCompatActivity {
 
     ArrayList<Noticia> noticias = new ArrayList<>();
-    ArrayList<NoticeComponent> noticeComponents = new ArrayList<>();
     LinearLayout layoutMain;
     ListView listView;
 
@@ -242,7 +241,6 @@ public class TesteRss extends AppCompatActivity {
         private final Activity act;
 
         public NoticiaAdapter(Activity act, List<Noticia> noticias) {
-            Log.d("SAPORRA","Existems "+noticias.size()+" Noticias");
             this.noticias = noticias;
             this.act = act;
         }
@@ -265,10 +263,7 @@ public class TesteRss extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             Noticia noticia = noticias.get(i);
-            Log.d("SAPORRA","Noticia "+i);
-            ImageView imageView = new ImageView(act);
-            imageView.setImageDrawable(noticia.getImg());
-            return new NoticeComponent(act,noticia.getTitulo(),noticia.getDecricao(),noticia.getDataPublicacao(),imageView);
+            return new NoticeComponent(act,noticia);
 //            TextView textView = new TextView(act);
 //            textView.setText(noticia.getConteudo());
 //            return textView;
