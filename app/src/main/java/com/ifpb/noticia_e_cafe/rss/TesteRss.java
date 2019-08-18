@@ -1,44 +1,28 @@
 package com.ifpb.noticia_e_cafe.rss;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.ifpb.noticia_e_cafe.component.NoticeComponent;
+import com.ifpb.noticia_e_cafe.component.adapter.NoticiaAdapter;
 import com.ifpb.noticia_e_cafe.entities.Noticia;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
+import com.ifpb.noticia_e_cafe.rss.consumer.ConsumerExcpetion;
+import com.ifpb.noticia_e_cafe.rss.consumer.RssConsumer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TesteRss extends AppCompatActivity {
 
-    ArrayList<Noticia> noticias = new ArrayList<>();
+    List<Noticia> noticias = new ArrayList<>();
     LinearLayout layoutMain;
     ListView listView;
 
@@ -83,45 +67,11 @@ public class TesteRss extends AppCompatActivity {
 
     public class ProcessaEmBackground extends AsyncTask<Integer,Void,String>{
 
-        private final Pattern PATTERN = Pattern.compile("<img .*\\/>");
-        private final Pattern PATTERN_SRC = Pattern.compile("http.+\\.[a-z]*\"");
         ProgressDialog progressDialog = new ProgressDialog(TesteRss.this);
-
-        public Drawable gerarDrawable(String urlString) {
-            try {
-                InputStream is = getInputStream(new URL(urlString));
-                Bitmap x = BitmapFactory.decodeStream(is);
-                return new BitmapDrawable(Resources.getSystem(), x);
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
-        public String encontraImg(String texto) {
-            Matcher matcher = PATTERN.matcher(texto);
-            if(matcher.find()){
-                String img = matcher.group(0);
-
-//                Log.d("SAPORRA","Encontro/ img: " + img);
-                Matcher matcheSrc = PATTERN_SRC.matcher(img);
-                if(matcheSrc.find()){
-                    String src = matcheSrc.group(0);
-                    src = src.substring(0,src.length()-1);
-//                    Log.d("SAPORRA","Encontrou o src: " + src);
-                    return src;
-                }
-
-            } else {
-                Log.d("SAPORRA","Não encontrou.");
-
-            }
-            return null;
-        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
 
             progressDialog.setMessage("Carregando...Tenha paciência meu amigo!");
             progressDialog.show();
@@ -129,64 +79,13 @@ public class TesteRss extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Integer... integers) {
-            String html = null;
-            try{
-                URL url = new URL("http://uirauna.net/feed/");
-
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-
-                factory.setNamespaceAware(false);
-
-                XmlPullParser xpp = factory.newPullParser();
-
-                xpp.setInput(getInputStream(url), "UTF_8");
-
-                boolean insideItem = false;
-
-                int eventType = xpp.getEventType();
-
-                Noticia noticia= new Noticia();
-                while(eventType != XmlPullParser.END_DOCUMENT){
-                    if(eventType == XmlPullParser.START_TAG){
-                        if(xpp.getName().equalsIgnoreCase(Item.ABERTURA.value())){
-                            noticia = new Noticia();
-                            insideItem = true;
-                        }else if (xpp.getName().equalsIgnoreCase(Item.TITULO.value())){
-                            if (insideItem){
-                                noticia.setTitulo(xpp.nextText());
-                            }
-                        }else if (xpp.getName().equalsIgnoreCase(Item.PUBLICACAO.value())){
-                            if (insideItem) {
-                                noticia.setDataPublicacao(xpp.nextText());
-                            }
-                        }else if (xpp.getName().equalsIgnoreCase(Item.CONTEUDO.value())){
-                            if (insideItem) {
-                                html = xpp.nextText();
-                                noticia.setImg(gerarDrawable(encontraImg(html)));
-                                noticia.setConteudo(Html.fromHtml(html).toString());
-                            }
-                        }else if (xpp.getName().equalsIgnoreCase(Item.DESCRICAO.value())){
-                            if (insideItem) {
-                                noticia.setDecricao(Html.fromHtml(xpp.nextText()).toString());
-                            }
-                        }else if (xpp.getName().equalsIgnoreCase(Item.LINK.value())){
-                            if (insideItem) {
-                                noticia.setLink(xpp.nextText());
-                            }
-                        }
-
-                    }else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase(Item.ABERTURA.value())){
-                        insideItem = false;
-                        noticias.add(noticia);
-                    }
-                    eventType = xpp.next();
-                }
-
-
-            }catch (Exception e){
-                e.printStackTrace();
+            try {
+                TesteRss.this.noticias = RssConsumer.consume(RssConsumer.URL_UIRAUNANET);
+            } catch (ConsumerExcpetion consumerExcpetion) {
+                consumerExcpetion.printStackTrace();
+                Log.d("APP_DEBUG",consumerExcpetion.getMessage());
             }
-            return html;
+            return null;
         }
 
         @Override
@@ -213,62 +112,8 @@ public class TesteRss extends AppCompatActivity {
 
 
 
-    private enum Item{
-        ABERTURA("item"),
-        TITULO("title"),
-        LINK("link"),
-        PUBLICACAO("pubdate"),
-        DESCRICAO("description"),
-        CONTEUDO("content:encoded")
-        ;
 
 
-        private final String value;
-
-        Item(String value){
-            this.value = value;
-        }
-
-        public String value(){
-            return this.value;
-        }
-
-    }
-
-    private class NoticiaAdapter extends BaseAdapter {
-
-        private final List<Noticia> noticias;
-        private final Activity act;
-
-        public NoticiaAdapter(Activity act, List<Noticia> noticias) {
-            this.noticias = noticias;
-            this.act = act;
-        }
-
-        @Override
-        public int getCount() {
-            return noticias.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return noticias.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            Noticia noticia = noticias.get(i);
-            return new NoticeComponent(act,noticia);
-//            TextView textView = new TextView(act);
-//            textView.setText(noticia.getConteudo());
-//            return textView;
-        }
-    }
 
 
 }

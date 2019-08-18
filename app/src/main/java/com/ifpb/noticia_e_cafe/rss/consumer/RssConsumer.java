@@ -24,7 +24,9 @@ import static com.ifpb.noticia_e_cafe.util.ImgFinder.encontraImg;
  */
 public class RssConsumer {
 
+    public static final String URL_RADARSERTANEJO = "https://www.radarsertanejo.com/";
     public static final String URL_UIRAUNANET = "http://uirauna.net/";
+    public static final String URL_RADARPB = "http://radarpb.com.br/";
 
     /**
      * Método para consumir os dados de um arquivo RSS e criar uma lista de notícias através desse arquivo.
@@ -68,6 +70,10 @@ public class RssConsumer {
                         insideItem = true;
                         //Cria uma nova notícia caso estejamos no início de um Item
                         //E a partir daí ele vai adicionando os atributos a notícia
+                    }else if (xpp.getName().equalsIgnoreCase(Item.ID.value())){
+                        if (insideItem){
+                            noticia.setGuid(xpp.nextText());
+                        }
                     }else if (xpp.getName().equalsIgnoreCase(Item.TITULO.value())){
                         if (insideItem){
                             noticia.setTitulo(xpp.nextText());
@@ -81,7 +87,12 @@ public class RssConsumer {
                             //O conteúdo da noticia vem com várias tags HTML dentro dele, por isso precisamos fazer um tratamento.
                             String html = xpp.nextText();
                             //Geramos a imagem da notícia a partidir do conteúdo
-                            noticia.setImg(gerarDrawable(new URL(encontraImg(html))));
+                            String urlImg = encontraImg(html);
+                            if(urlImg != null){
+                                noticia.setImg(gerarDrawable(new URL(urlImg)));
+                            }else{
+                                noticia.setImg(null);
+                            }
                             //Utilizamos o interpretador de html para formatar o texto do conteúdo para a gente
                             noticia.setConteudo(Html.fromHtml(html).toString());
                         }
@@ -106,7 +117,7 @@ public class RssConsumer {
 
         }catch (Exception e){
             Log.e("APP_ERRO","Houve um erro no consumo do RSS para o site: "+urlString);
-            Log.e("APP_ERRO",e.getMessage());
+            e.printStackTrace();
             throw new ConsumerExcpetion("Houve um erro no consumo do RSS");
         }
     }
@@ -118,7 +129,9 @@ public class RssConsumer {
         LINK("link"),
         PUBLICACAO("pubdate"),
         DESCRICAO("description"),
-        CONTEUDO("content:encoded");
+        CONTEUDO("content:encoded"),
+        ID("guid");
+
 
         private final String value;
 
