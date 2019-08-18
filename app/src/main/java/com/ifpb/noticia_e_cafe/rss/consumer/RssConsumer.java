@@ -117,6 +117,7 @@ public class RssConsumer {
 
         }catch (Exception e){
             Log.e("APP_ERRO","Houve um erro no consumo do RSS para o site: "+urlString);
+            Log.e("APP_ERRO","Classe: "+RssConsumer.class.getName());
             e.printStackTrace();
             throw new ConsumerExcpetion("Houve um erro no consumo do RSS");
         }

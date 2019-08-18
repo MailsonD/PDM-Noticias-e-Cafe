@@ -24,6 +24,7 @@ public class CreateConnectionUrl {
             return url.openConnection().getInputStream();
         } catch (Exception e) {
             Log.d("APP_ERRO","Houver um erro de conexão com a url: "+url.getPath());
+            Log.e("APP_ERRO","Classe: "+CreateConnectionUrl.class.getName());
             Log.d("APP_ERRO",e.getMessage());
             throw new ConnectionUrlException("Houve uma falha ao conectar com a url desejada");
         }

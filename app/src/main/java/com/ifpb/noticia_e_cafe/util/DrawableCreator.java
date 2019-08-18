@@ -30,6 +30,7 @@ public class DrawableCreator {
             return new BitmapDrawable(Resources.getSystem(), x);
         } catch (Exception e) {
             Log.e("APP_ERROR","Houve um erro ao gerar o drawable pela URL enviada");
+            Log.e("APP_ERRO","Classe: "+DrawableCreator.class.getName());
             Log.e("APP_ERROR",e.getMessage());
             throw new DrawableCreatorExcpetion("Houve uma falha ao conectar com a url desejada");
         }

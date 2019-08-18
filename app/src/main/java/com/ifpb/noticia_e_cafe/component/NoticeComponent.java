@@ -30,7 +30,7 @@ public class NoticeComponent extends LinearLayout {
     private LinearLayout layoutImagem;
 
     /**
-     * Constroi um <b>Componente</b> de notícia sem imagem.
+     * Constroi um <b>Componente</b> de notícia.
      * @param tela -> Activity da tela que o componente será inserido
      * @param noticia -> Objeto notícia que será exibido no componente
      */

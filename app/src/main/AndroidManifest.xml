@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,10 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <receiver
+            android:name=".rss.reciver.RssReceiver"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
+
         <service
-            android:name=".rss.MyIntentService"
-            android:exported="false"
-            ></service>
+            android:name=".rss.service.ConsumeRssService"
+            android:exported="false" />
 
         <activity android:name=".rss.TesteRss">
             <intent-filter>
@@ -27,23 +34,25 @@
             </intent-filter>
         </activity>
         <activity android:name=".tela.TelaLogin">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--<activity android:name=".MainActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".MainActivity">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".tela.TelaCadastro"></activity>
-        <activity android:name=".tela.TelaEditar"></activity>
-        <activity android:name=".tela.TelaPrincipal"></activity>
-        <activity android:name=".tela.TelaNoticia"></activity>
+        <!--</activity>-->
+        <activity android:name=".tela.TelaCadastro" />
+        <activity android:name=".tela.TelaEditar" />
+        <activity android:name=".tela.TelaPrincipal" />
+        <activity android:name=".tela.TelaNoticia" />
     </application>
 
 </manifest>

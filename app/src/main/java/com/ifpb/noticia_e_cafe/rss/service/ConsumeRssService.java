@@ -1,6 +1,4 @@
-package com.ifpb.noticia_e_cafe.rss;
-
-import android.app.IntentService;
+package com.ifpb.noticia_e_cafe.rss.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,9 +8,11 @@ import android.util.Log;
 
 
 
-public class MyIntentService extends Service {
+public class ConsumeRssService extends Service {
+
     private Handler handler;
-    public MyIntentService() {
+
+    public ConsumeRssService() {
         super();
         handler = new Handler();
     }
