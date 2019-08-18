@@ -16,9 +16,8 @@ public class ImgFinder {
 
     /**
      * Método para procurarar uma imagem dentro do conteúdo da notícia
-     * @param conteudo
-     * @return uma String com uma url para a imagem caso seja encontrada
-     * @return null caso não enctrone nenhuma imagem no conteúdo
+     * @param conteudo -> O conteúdo da notícia onde vai ser buscada a imagem
+     * @return uma String com uma url para a imagem caso seja encontrada. Caso não seja encontrado nada é retornado NULL
      */
     public static String encontraImg(String conteudo) {
         Matcher matcher = PATTERN_IMG.matcher(conteudo);
