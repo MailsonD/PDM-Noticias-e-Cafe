@@ -17,11 +17,25 @@ import com.ifpb.noticia_e_cafe.rss.reciver.RssReceiver;
 
 import java.util.List;
 
-
+/**
+ * @author Mailson
+ * @mail mailssondennis@gmail.com
+ *
+ * @author Ian
+ * @mail
+ *
+ * Esta classe tem representa o serviço que será executado em background para buscar as notícias do RSS
+ * de cada site. As requisições parar o serviço não devem ser feitas diretamente para esta classe, e sim
+ * para: RssReceiver.
+ * @see RssReceiver
+ */
 public class ConsumeRssService extends Service {
 
+    /**
+     * Esta constante representa um minuto em milisegundos para ser utilizada no agendamento das próximas
+     * chamadas do serviço
+     */
     private final long MINUTE = 60000L;
-    private final long TEN_SECONDS = 10000L;
     private BackgroundWorker bw;
 
     public ConsumeRssService() {
@@ -51,7 +65,10 @@ public class ConsumeRssService extends Service {
         super.onDestroy();
     }
 
-
+    /**
+     * Esta classe serve para que possamos rodar cada tarefa solicitada ao serviço em uma thread
+     * separada da thread principal.
+     */
     private class BackgroundWorker extends Thread{
 
         @Override
@@ -64,6 +81,12 @@ public class ConsumeRssService extends Service {
         }
     }
 
+    /**
+     * Método responsável por chamar a classe que irá realizar a requisição ao RSS
+     * e tratar todas as notícias retornadas.
+     * Este método deve ser executado sempre em uma thread, pois não se pode abrir
+     * uma conexão com uma URL na thread principal.
+     */
     private void realizarRequisicao() {
         try {
             List<Noticia> noticias = RssConsumer.consume(RssConsumer.URL_UIRAUNANET);
@@ -71,10 +94,18 @@ public class ConsumeRssService extends Service {
                 System.out.println(n.getGuid());
             }
         } catch (ConsumerExcpetion consumerExcpetion) {
+            Log.e("APP_ERROR",consumerExcpetion.getMessage());
             consumerExcpetion.printStackTrace();
         }
     }
 
+    /**
+     * Método responsável por agendar a hora em que este serviço será executado novamente.
+     * Desta maneira, não haverá uma thread ociosa no aplicativo até que ele precise realizar
+     * novamente o processo de requisitar as notícias. O serviço só existirá enquanto estiver
+     * realizando a requisição e seu processamento. Após isso o Android ficará responsável por
+     * iniciar o serviço novamente no tempo agendado.
+     */
     private void agendarProximoServico(){
         Intent intent = new Intent(this, RssReceiver.class);
         PendingIntent intencaoAgendada = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
