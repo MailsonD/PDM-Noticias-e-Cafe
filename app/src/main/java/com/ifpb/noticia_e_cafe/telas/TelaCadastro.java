@@ -1,4 +1,4 @@
-package com.ifpb.noticia_e_cafe.tela;
+package com.ifpb.noticia_e_cafe.telas;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;

@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".tela.TelaLogin">
+        <activity android:name=".telas.TelaLogin">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,10 +49,10 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
-        <activity android:name=".tela.TelaCadastro" />
-        <activity android:name=".tela.TelaEditar" />
-        <activity android:name=".tela.TelaPrincipal" />
-        <activity android:name=".tela.TelaNoticia" />
+        <activity android:name=".telas.TelaCadastro" />
+        <activity android:name=".telas.TelaEditar" />
+        <activity android:name=".telas.TelaPrincipal" />
+        <activity android:name=".telas.TelaNoticia" />
     </application>
 
 </manifest>
