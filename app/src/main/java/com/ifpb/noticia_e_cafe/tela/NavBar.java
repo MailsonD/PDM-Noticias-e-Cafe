@@ -11,12 +11,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,14 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         //criando o layout e vinculando ao activity
         DrawerLayout drawer = new DrawerLayout(this);
         setContentView(drawer);
+
+        //Container que conterá todos os componentes e layouts da tela
+        LinearLayout container = new LinearLayout(this);
+        container.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
         //criando o Toolbar
         AppBarLayout bar = new AppBarLayout(this);
         Toolbar toolbar = new Toolbar(this);
@@ -61,7 +71,7 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
             toolbar.setElevation(30);
         }
         bar.addView(toolbar);
-        drawer.addView(bar, 0, new DrawerLayout.LayoutParams(
+        container.addView(bar, 0, new DrawerLayout.LayoutParams(                              //-------------------------------------------//
                 DrawerLayout.LayoutParams.MATCH_PARENT,//comprimento
                 DrawerLayout.LayoutParams.WRAP_CONTENT//altura
         ));
@@ -69,9 +79,9 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         //Adicionando toggle com icone de menu (padrão do material design)
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);//para sincronizar ao fechar
+        drawer.addDrawerListener(toggle);//para sincronizar ao fechar                          ////////////////////////////////////////////////
         toggle.syncState();
-        //
+
         //criar os paramentros do layout para definir a gravidade
         DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams(
                 DrawerLayout.LayoutParams.WRAP_CONTENT,//comprimento
@@ -81,24 +91,22 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         //adicionar ao layout
         NavigationView navigationView = new NavigationView(this);
         navigationView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-        drawer.addView(navigationView, 1, params);
-
-        Toolbar toolbarNavBar = new Toolbar(this);
-        toolbarNavBar.setBackgroundColor(Color.rgb(218, 220, 223));
+        container.addView(navigationView, 1, params);                                   //-------------------------------------------//
 
         navigationView.getMenu().add(0, 0, 0, "Minha Conta");//.setIcon(R.drawable.ic_profile);
         navigationView.getMenu().add(0, 1, 1, "Notícias");//.setIcon(R.drawable.ic_trash);
         navigationView.getMenu().add(1, 2, 2, "Logout");//.setIcon(R.drawable.ic_trash);
         //
         navigationView.setNavigationItemSelectedListener(this);
+        //
+        Toolbar toolbarNavBar = new Toolbar(this);
+        toolbarNavBar.setBackgroundColor(Color.rgb(218, 220, 223));
         toolbarNavBar.addView(header("Ian Carneiro Teixeira de Araujo"));
         navigationView.addHeaderView(toolbarNavBar);
-
+        //
+        drawer.addView(container);
     }
 
-    public void gerarNavBar(){
-
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

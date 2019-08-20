@@ -32,6 +32,9 @@ public class TelaEditar extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         this.width = DeviceProperties.getDeviceWidth(getWindowManager());
 
         //Layout principal
