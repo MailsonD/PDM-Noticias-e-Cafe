@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.R;
+import com.ifpb.noticia_e_cafe.control.UserControl;
+import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
 
 
 //public class NavBar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -137,8 +139,10 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         } else if (menuItem.getItemId() == 1){
             startActivity(new Intent(this,TelaPrincipal.class));
         } else if (menuItem.getItemId() == 2){
-            /*remove usuário da sessão*/
+            UserControl userControl = new UserControl(this);
+            userControl.logout();
             startActivity(new Intent(this,TelaLogin.class));
+            finish();
         }
         return false;
     }

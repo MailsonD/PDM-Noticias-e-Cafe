@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.ifpb.noticia_e_cafe.R;
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
+import com.ifpb.noticia_e_cafe.control.UserControl;
+import com.ifpb.noticia_e_cafe.model.Usuario;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
 public class TelaLogin extends AppCompatActivity {
@@ -41,6 +43,12 @@ public class TelaLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
+        boolean autenticado = sharedPreferences.getBoolean("logado", false);
+        if(autenticado){
+            startActivity(new Intent(this, TelaPrincipal.class));
+        }
 
 
         //========== CONFIGURANDO LAYOUT PRINCIPAL =============
@@ -98,6 +106,7 @@ public class TelaLogin extends AppCompatActivity {
         inputFieldEmail = new InputField(
                 this,"Email", InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS,width
         );
+
         inputFieldSenha = new InputField(
                 this,"Senha", InputType.TYPE_TEXT_VARIATION_PASSWORD,width
         );
@@ -111,13 +120,16 @@ public class TelaLogin extends AppCompatActivity {
 //            .matches("^[\\w \\- \\. % +]{2,}@[a-z]{2,}(\\.[a-z]{2,})+$")
             @Override
             public void onClick(View v) {
-                if(inputFieldEmail.getValue().equals("Zé") && inputFieldSenha.getValue().equals("123")) {
-                    SharedPreferences.Editor editor = getSharedPreferences("authenticatedUser", MODE_PRIVATE).edit();
-                    editor.putBoolean("logado", true);
-                    editor.putString("nome", "Zé");
-                    editor.putString("email", "Zé");
-                    editor.putString("senha", "123");
-                    editor.apply();
+                UserControl userControl = new UserControl(TelaLogin.this);
+                Usuario usuarioInputs = new Usuario(inputFieldEmail.getValue(), inputFieldSenha.getValue());
+                Usuario usuario = userControl.login(usuarioInputs);
+
+                if(!(inputFieldEmail.getValue().matches("^[\\w \\- \\. % +]{2,}@[a-z]{2,}(\\.[a-z]{2,})+$"))){
+                    Toast.makeText(TelaLogin.this, "Informe um email válido!", Toast.LENGTH_SHORT).show();
+                }else if(inputFieldSenha.getValue().length()<8){
+                    Toast.makeText(TelaLogin.this, "Informe uma senha de no mínimo 8 caracteres.", Toast.LENGTH_SHORT).show();
+                }else if(usuario!=null && usuarioInputs.getEmail().equals(usuario.getEmail()) &&
+                        usuarioInputs.getSenha().equals(usuario.getSenha())) {
                     Intent intent = new Intent(TelaLogin.this, TelaPrincipal.class);
                     startActivity(intent);
                     finish();
