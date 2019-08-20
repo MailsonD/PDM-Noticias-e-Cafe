@@ -11,22 +11,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.R;
 
 
-//public class MainActivity extends AppCompatActivity {
+//public class NavBar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 public class NavBar extends Activity implements NavigationView.OnNavigationItemSelectedListener {
+    private LinearLayout container;
 
     private ViewGroup header(String string){
         //
@@ -57,24 +56,27 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         setContentView(drawer);
 
         //Container que conterá todos os componentes e layouts da tela
-        LinearLayout container = new LinearLayout(this);
+        container = new LinearLayout(this);
         container.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
         ));
+        container.setOrientation(LinearLayout.VERTICAL);
 
         //criando o Toolbar
         AppBarLayout bar = new AppBarLayout(this);
         Toolbar toolbar = new Toolbar(this);
+        toolbar.setTitle(getTitleNavBar());
         toolbar.setBackgroundColor(Color.rgb(154, 159, 157));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setElevation(30);
         }
         bar.addView(toolbar);
-        container.addView(bar, 0, new DrawerLayout.LayoutParams(                              //-------------------------------------------//
+        container.addView(bar, new DrawerLayout.LayoutParams(                              //-------------------------------------------//
                 DrawerLayout.LayoutParams.MATCH_PARENT,//comprimento
                 DrawerLayout.LayoutParams.WRAP_CONTENT//altura
         ));
+        drawer.addView(container);
 
         //Adicionando toggle com icone de menu (padrão do material design)
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -87,11 +89,11 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
                 DrawerLayout.LayoutParams.WRAP_CONTENT,//comprimento
                 DrawerLayout.LayoutParams.MATCH_PARENT//altura
         );
-        params.gravity = Gravity.LEFT;//informar de onde sai a bandeija
+        params.gravity = Gravity.LEFT;//informar de onde sai a bandeijaf
         //adicionar ao layout
         NavigationView navigationView = new NavigationView(this);
         navigationView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-        container.addView(navigationView, 1, params);                                   //-------------------------------------------//
+        drawer.addView(navigationView, 1, params);                                   //-------------------------------------------//
 
         navigationView.getMenu().add(0, 0, 0, "Minha Conta");//.setIcon(R.drawable.ic_profile);
         navigationView.getMenu().add(0, 1, 1, "Notícias");//.setIcon(R.drawable.ic_trash);
@@ -104,9 +106,23 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         toolbarNavBar.addView(header("Ian Carneiro Teixeira de Araujo"));
         navigationView.addHeaderView(toolbarNavBar);
         //
-        drawer.addView(container);
+
     }
 
+    public void setDynamicContent(View c){
+//        container.removeViewAt(2);
+        container.addView(c, 1);
+    }
+
+    public String getTitleNavBar(){
+        return "NavBar";
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        //super.onBackPressed();
+//        Toast.makeText(this, "Não feche essa bombas", Toast.LENGTH_SHORT).show();
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
