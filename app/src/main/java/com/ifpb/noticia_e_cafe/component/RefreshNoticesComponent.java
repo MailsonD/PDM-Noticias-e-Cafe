@@ -45,10 +45,6 @@ public class RefreshNoticesComponent extends SwipeRefreshLayout {
 
         addView(listView);
 
-        setOnRefreshListener(() -> {
-            atualizarNoticias();
-            setRefreshing(false);
-        });
     }
 
     public List<Noticia> getNoticias() {
