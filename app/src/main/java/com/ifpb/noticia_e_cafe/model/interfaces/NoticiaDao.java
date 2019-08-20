@@ -2,6 +2,7 @@ package com.ifpb.noticia_e_cafe.model.interfaces;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -10,7 +11,10 @@ import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.ManagerDataBase;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.NoticiaTable;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.TABLES_PERSISTENCE;
+import com.ifpb.noticia_e_cafe.util.DrawableCreator;
 
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,6 +71,40 @@ public class NoticiaDao implements Dao<Noticia> {
 
     @Override
     public List<Noticia> listar() {
-        return null;
+        List<Noticia> noticias = new ArrayList<>();
+
+        Log.i("APP_INFO", "CONEXAO COM BANCO");
+        db = managerDataBase.getWritableDatabase();
+        Cursor cursor = db.query(TABLES_PERSISTENCE.NOTICIA.getTabela(),null,null,null,null,null,null);
+
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            noticias.add(fillNoticia(cursor));
+            cursor.moveToNext();
+        }
+        Log.i("APP_INFO", "FECHANDO CONEXAO");
+        cursor.close();
+        db.close();
+        Log.i("APP_INFO", "BUSCANDO TODAS AS NOTÍCIAS");
+        return noticias;
+    }
+
+    private Noticia fillNoticia(Cursor cursor){
+        Noticia noticia = new Noticia(
+                cursor.getString(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(5),
+                cursor.getString(6),
+                null,
+                cursor.getString(7)
+        );
+        try{
+            noticia.setImg(DrawableCreator.gerarDrawable(new URL(noticia.getUrlImg())));
+        }catch(Exception e){
+            Log.e("APP_ERROR","Não foi possível gerar a imagem para a notícia: "+noticia.getGuid());
+        }
+        return noticia;
     }
 }
