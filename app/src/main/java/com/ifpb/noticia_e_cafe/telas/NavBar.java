@@ -1,4 +1,4 @@
-package com.ifpb.noticia_e_cafe.tela;
+package com.ifpb.noticia_e_cafe.telas;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +24,9 @@ import android.widget.Toast;
 import com.ifpb.noticia_e_cafe.R;
 import com.ifpb.noticia_e_cafe.control.UserControl;
 import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
+import com.ifpb.noticia_e_cafe.telas.TelaEditar;
+import com.ifpb.noticia_e_cafe.telas.TelaLogin;
+import com.ifpb.noticia_e_cafe.telas.TelaPrincipal;
 
 
 //public class NavBar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -135,13 +138,13 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == 0){
-            startActivity(new Intent(this,TelaEditar.class));
+            startActivity(new Intent(this, TelaEditar.class));
         } else if (menuItem.getItemId() == 1){
-            startActivity(new Intent(this,TelaPrincipal.class));
+            startActivity(new Intent(this, TelaPrincipal.class));
         } else if (menuItem.getItemId() == 2){
             UserControl userControl = new UserControl(this);
             userControl.logout();
-            startActivity(new Intent(this,TelaLogin.class));
+            startActivity(new Intent(this, TelaLogin.class));
             finish();
         }
         return false;

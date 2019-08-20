@@ -1,4 +1,4 @@
-package com.ifpb.noticia_e_cafe.tela;
+package com.ifpb.noticia_e_cafe.telas;
 
 import android.content.Intent;
 import android.graphics.Color;
