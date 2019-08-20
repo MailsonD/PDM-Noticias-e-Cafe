@@ -1,16 +1,14 @@
 package com.ifpb.noticia_e_cafe.rss.service;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.ifpb.noticia_e_cafe.entities.Noticia;
+import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 import com.ifpb.noticia_e_cafe.rss.consumer.ConsumerExcpetion;
 import com.ifpb.noticia_e_cafe.rss.consumer.RssConsumer;
 import com.ifpb.noticia_e_cafe.rss.reciver.RssReceiver;

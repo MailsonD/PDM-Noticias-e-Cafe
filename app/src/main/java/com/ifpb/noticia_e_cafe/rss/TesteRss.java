@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ifpb.noticia_e_cafe.component.adapter.NoticiaAdapter;
-import com.ifpb.noticia_e_cafe.entities.Noticia;
+import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 import com.ifpb.noticia_e_cafe.rss.consumer.ConsumerExcpetion;
 import com.ifpb.noticia_e_cafe.rss.consumer.RssConsumer;
 

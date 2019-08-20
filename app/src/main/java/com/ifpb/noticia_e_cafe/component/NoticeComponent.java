@@ -5,12 +5,11 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ifpb.noticia_e_cafe.entities.Noticia;
+import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
 /**

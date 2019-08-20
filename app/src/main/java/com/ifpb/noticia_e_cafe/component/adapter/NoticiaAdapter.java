@@ -5,10 +5,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 
 import com.ifpb.noticia_e_cafe.component.NoticeComponent;
-import com.ifpb.noticia_e_cafe.entities.Noticia;
+import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 
 import java.util.List;
 
