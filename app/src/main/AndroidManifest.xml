@@ -26,17 +26,37 @@
             android:name=".rss.service.ConsumeRssService"
             android:exported="false" />
 
-        <activity android:name=".rss.TesteRss">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!-- "@style/Theme.AppCompat.Light.NoActionBar" -->
+        <activity android:name=".tela.NavBar">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+             <action android:name="android.intent.action.VIEW" />
+
+
+             <category android:name="android.intent.category.LAUNCHER"/>
+             </intent-filter>
         </activity>
         <activity android:name=".telas.TelaLogin">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity> <!-- <activity android:name=".MainActivity"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- <activity android:name=".tela.TelaCadastro"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <activity android:name=".telas.TelaEditar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,7 +70,6 @@
             <!--</intent-filter>-->
         <!--</activity>-->
         <activity android:name=".telas.TelaCadastro" />
-        <activity android:name=".telas.TelaEditar" />
         <activity android:name=".telas.TelaPrincipal" />
         <activity android:name=".telas.TelaNoticia" />
     </application>

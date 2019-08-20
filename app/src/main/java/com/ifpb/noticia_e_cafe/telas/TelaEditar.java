@@ -15,10 +15,14 @@ import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
+<<<<<<< HEAD:app/src/main/java/com/ifpb/noticia_e_cafe/telas/TelaEditar.java
 /**
  * @author Leanderson-Coelho
  * **/
 public class TelaEditar extends AppCompatActivity {
+=======
+public class TelaEditar extends NavBar {
+>>>>>>> f544ef26b9527f0115a59655e1bfff87582a4847:app/src/main/java/com/ifpb/noticia_e_cafe/tela/TelaEditar.java
 
     private LinearLayout layoutInputs;
     private LinearLayout layoutButtons;
@@ -37,6 +41,9 @@ public class TelaEditar extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         this.width = DeviceProperties.getDeviceWidth(getWindowManager());
 
         //Layout principal
@@ -45,7 +52,7 @@ public class TelaEditar extends AppCompatActivity {
         this.layoutMain.setOrientation(LinearLayout.VERTICAL);
         this.layoutMain.setPadding(0,0,0,0);
         this.layoutMain.setGravity(Gravity.CENTER_VERTICAL);
-        setContentView(layoutMain);
+        setDynamicContent(layoutMain);
 
         //Titulo da tela
         this.nomeTela = new TextView(this);
