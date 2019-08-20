@@ -16,14 +16,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".telas.TelaTeste">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        
         <receiver
             android:name=".rss.reciver.RssReceiver"
             android:enabled="true"
@@ -34,41 +26,20 @@
             android:name=".rss.service.ConsumeRssService"
             android:exported="false" />
 
-        <!-- "@style/Theme.AppCompat.Light.NoActionBar" -->
-        <activity android:name=".tela.NavBar">
 
-             <intent-filter>
-             <action android:name="android.intent.action.VIEW" />
-
-
-             <category android:name="android.intent.category.LAUNCHER"/>
-             </intent-filter>
-        </activity>
         <activity android:name=".telas.TelaLogin">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".telas.TelaEditar">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".MainActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".telas.TelaDetalhesNoticia"/>
+        <!-- "@style/Theme.AppCompat.Light.NoActionBar" -->
+        <activity android:name=".telas.NavBar"/>
+        <activity android:name=".telas.TelaEditar"/>
         <activity android:name=".telas.TelaCadastro" />
         <activity android:name=".telas.TelaPrincipal" />
-        <activity android:name=".telas.TelaNoticia" />
     </application>
 
 </manifest>

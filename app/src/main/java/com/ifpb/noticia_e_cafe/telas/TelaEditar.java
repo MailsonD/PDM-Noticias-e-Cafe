@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
@@ -13,14 +12,12 @@ import android.widget.TextView;
 
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
-import com.ifpb.noticia_e_cafe.tela.NavBar;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
 /**
  * @author Leanderson-Coelho
  *
  * */
-
 public class TelaEditar extends NavBar {
 
 
@@ -68,6 +65,11 @@ public class TelaEditar extends NavBar {
         this.layoutMain.addView(layoutInputs);
         this.layoutMain.addView(layoutButtons);
         setTitle("Tela de edição");
+    }
+
+    @Override
+    public String getTitleNavBar(){
+        return "Edição";
     }
 
     private void construirLayoutInputs(){

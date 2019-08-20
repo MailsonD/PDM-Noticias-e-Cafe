@@ -10,14 +10,19 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(String id, String nome, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
+    public Usuario(String email, String senha) {
         this.email = email;
         this.senha = senha;
     }
 
     public Usuario(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
+
+    public Usuario(String id, String nome, String email, String senha) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;

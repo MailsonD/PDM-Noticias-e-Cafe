@@ -1,7 +1,8 @@
-package com.ifpb.noticia_e_cafe.tela;
+package com.ifpb.noticia_e_cafe.telas;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -21,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.R;
-import com.ifpb.noticia_e_cafe.telas.TelaEditar;
-import com.ifpb.noticia_e_cafe.telas.TelaLogin;
+
+import com.ifpb.noticia_e_cafe.control.UserControl;
 
 
 //public class NavBar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,6 +54,11 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
+        String authenticatedUser = sharedPreferences.getString("nome", "");
+
+
         //criando o layout e vinculando ao activity
         DrawerLayout drawer = new DrawerLayout(this);
         setContentView(drawer);
@@ -105,7 +111,7 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         //
         Toolbar toolbarNavBar = new Toolbar(this);
         toolbarNavBar.setBackgroundColor(Color.rgb(218, 220, 223));
-        toolbarNavBar.addView(header("Ian Carneiro Teixeira de Araujo"));
+        toolbarNavBar.addView(header(authenticatedUser));
         navigationView.addHeaderView(toolbarNavBar);
         //
 
@@ -131,9 +137,12 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
         if (menuItem.getItemId() == 0){
             startActivity(new Intent(this, TelaEditar.class));
         } else if (menuItem.getItemId() == 1){
-            Toast.makeText(this, "Selecionou o menu 2", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, TelaPrincipal.class));
         } else if (menuItem.getItemId() == 2){
+            UserControl userControl = new UserControl(this);
+            userControl.logout();
             startActivity(new Intent(this, TelaLogin.class));
+            finish();
         }
         return false;
     }

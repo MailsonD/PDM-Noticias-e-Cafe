@@ -1,6 +1,7 @@
 package com.ifpb.noticia_e_cafe.telas;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
+import com.ifpb.noticia_e_cafe.control.UserControl;
+import com.ifpb.noticia_e_cafe.model.Usuario;
+import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
 
 public class TelaCadastro extends AppCompatActivity {
     private LinearLayout linearLayoutButtons;
@@ -75,7 +79,12 @@ public class TelaCadastro extends AppCompatActivity {
                 }else if(senha.getValue().length()<8){
                     Toast.makeText(TelaCadastro.this, "Informe uma senha de no mínimo 8 caracteres.", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(TelaCadastro.this, "Foi", Toast.LENGTH_SHORT).show();
+                    UserControl userControl = new UserControl(TelaCadastro.this);
+                    Usuario usuario = new Usuario(nome.getValue(), email.getValue(), senha.getValue());
+                    userControl.cadastrar(usuario);
+                    startActivity(new Intent(TelaCadastro.this,TelaLogin.class));
+                    Toast.makeText(TelaCadastro.this, "Cadastro Realizado!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });

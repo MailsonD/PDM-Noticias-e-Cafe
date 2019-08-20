@@ -1,6 +1,7 @@
 package com.ifpb.noticia_e_cafe.telas;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
@@ -8,13 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.R;
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
+import com.ifpb.noticia_e_cafe.control.UserControl;
+import com.ifpb.noticia_e_cafe.model.Usuario;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
 public class TelaLogin extends AppCompatActivity {
@@ -33,10 +38,15 @@ public class TelaLogin extends AppCompatActivity {
     private int heigth;
 
 //    private Resources res;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
+        boolean autenticado = sharedPreferences.getBoolean("logado", false);
+        if(autenticado){
+            startActivity(new Intent(this, TelaPrincipal.class));
+        }
 
 
         //========== CONFIGURANDO LAYOUT PRINCIPAL =============
@@ -94,6 +104,7 @@ public class TelaLogin extends AppCompatActivity {
         inputFieldEmail = new InputField(
                 this,"Email", InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS,width
         );
+
         inputFieldSenha = new InputField(
                 this,"Senha", InputType.TYPE_TEXT_VARIATION_PASSWORD,width
         );
@@ -103,7 +114,28 @@ public class TelaLogin extends AppCompatActivity {
 
         //=========== ADICIONANDO EVENTOS ONCLICK ==============
 
-        btnConfirmar.setOnClickAction(v -> startActivity(new Intent(this,TelaPrincipal.class)));
+        btnConfirmar.setOnClickAction(new View.OnClickListener() {
+//            .matches("^[\\w \\- \\. % +]{2,}@[a-z]{2,}(\\.[a-z]{2,})+$")
+            @Override
+            public void onClick(View v) {
+                UserControl userControl = new UserControl(TelaLogin.this);
+                Usuario usuarioInputs = new Usuario(inputFieldEmail.getValue(), inputFieldSenha.getValue());
+                Usuario usuario = userControl.login(usuarioInputs);
+
+                if(!(inputFieldEmail.getValue().matches("^[\\w \\- \\. % +]{2,}@[a-z]{2,}(\\.[a-z]{2,})+$"))){
+                    Toast.makeText(TelaLogin.this, "Informe um email válido!", Toast.LENGTH_SHORT).show();
+                }else if(inputFieldSenha.getValue().length()<8){
+                    Toast.makeText(TelaLogin.this, "Informe uma senha de no mínimo 8 caracteres.", Toast.LENGTH_SHORT).show();
+                }else if(usuario!=null && usuarioInputs.getEmail().equals(usuario.getEmail()) &&
+                        usuarioInputs.getSenha().equals(usuario.getSenha())) {
+                    Intent intent = new Intent(TelaLogin.this, TelaPrincipal.class);
+                    startActivity(intent);
+                    finish();
+                } else{
+                    Toast.makeText(TelaLogin.this, "Email ou Senha Inválidos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //========= ADICIONANDO COMPONENTES AO LAYOUT =========
 
@@ -112,6 +144,7 @@ public class TelaLogin extends AppCompatActivity {
         layoutForm.addView(btnConfirmar);
 
     }
+
 
     private void configurandoTextoDeCadastro() {
         //======= CONFIGURANDO LAYOUT DO LINK DE CADASTRO ======
