@@ -8,11 +8,15 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.ifpb.noticia_e_cafe.control.NoticiaControl;
 import com.ifpb.noticia_e_cafe.model.entities.Noticia;
+import com.ifpb.noticia_e_cafe.model.interfaces.Dao;
+import com.ifpb.noticia_e_cafe.model.interfaces.NoticiaDao;
 import com.ifpb.noticia_e_cafe.rss.consumer.ConsumerExcpetion;
 import com.ifpb.noticia_e_cafe.rss.consumer.RssConsumer;
 import com.ifpb.noticia_e_cafe.rss.reciver.RssReceiver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +39,7 @@ public class ConsumeRssService extends Service {
      */
     private final long MINUTE = 60000L;
     private BackgroundWorker bw;
+    private NoticiaControl noticiaControl;
 
     public ConsumeRssService() {
         super();
@@ -48,6 +53,7 @@ public class ConsumeRssService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        noticiaControl = new NoticiaControl(this);
     }
 
     @Override
@@ -86,16 +92,32 @@ public class ConsumeRssService extends Service {
      * uma conexão com uma URL na thread principal.
      */
     private void realizarRequisicao() {
+        List<Noticia> noticias = new ArrayList<>();
         try {
-            List<Noticia> noticias = RssConsumer.consume(RssConsumer.URL_UIRAUNANET);
-            for(Noticia n: noticias){
-                System.out.println(n.getGuid());
-            }
+            noticias.addAll(getNoticiasFrom(RssConsumer.URL_RADARPB));
+            noticias.addAll(getNoticiasFrom(RssConsumer.URL_UIRAUNANET));
+            noticias.addAll(getNoticiasFrom(RssConsumer.URL_RADARSERTANEJO));
+
+            salvarNoticias(noticias);
         } catch (ConsumerExcpetion consumerExcpetion) {
             Log.e("APP_ERROR",consumerExcpetion.getMessage());
             consumerExcpetion.printStackTrace();
         }
     }
+
+    private void salvarNoticias(List<Noticia> noticias) {
+
+        for(Noticia noticia: noticias){
+            Log.i("APP_INFO","Salvando a noticia de id: "+noticia.getGuid());
+            noticiaControl.salvar(noticia);
+        }
+
+    }
+
+    private List<Noticia> getNoticiasFrom(String url) throws ConsumerExcpetion {
+        return RssConsumer.consume(url);
+    }
+
 
     /**
      * Método responsável por agendar a hora em que este serviço será executado novamente.

@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.ifpb.noticia_e_cafe.exception.UsuarioNotFound;
-import com.ifpb.noticia_e_cafe.model.Usuario;
+import com.ifpb.noticia_e_cafe.model.entities.Usuario;
 import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
 
 public class UserControl {
