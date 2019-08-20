@@ -1,6 +1,7 @@
 package com.ifpb.noticia_e_cafe.tela;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,9 +11,11 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.R;
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
@@ -35,7 +38,6 @@ public class TelaLogin extends AppCompatActivity {
     private int heigth;
 
 //    private Resources res;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +107,25 @@ public class TelaLogin extends AppCompatActivity {
 
         //=========== ADICIONANDO EVENTOS ONCLICK ==============
 
-        btnConfirmar.setOnClickAction(v -> startActivity(new Intent(this,TelaPrincipal.class)));
+        btnConfirmar.setOnClickAction(new View.OnClickListener() {
+//            .matches("^[\\w \\- \\. % +]{2,}@[a-z]{2,}(\\.[a-z]{2,})+$")
+            @Override
+            public void onClick(View v) {
+                if(inputFieldEmail.getValue().equals("Zé") && inputFieldSenha.getValue().equals("123")) {
+                    SharedPreferences.Editor editor = getSharedPreferences("authenticatedUser", MODE_PRIVATE).edit();
+                    editor.putBoolean("logado", true);
+                    editor.putString("nome", "Zé");
+                    editor.putString("email", "Zé");
+                    editor.putString("senha", "123");
+                    editor.apply();
+                    Intent intent = new Intent(TelaLogin.this, TelaPrincipal.class);
+                    startActivity(intent);
+                    finish();
+                } else{
+                    Toast.makeText(TelaLogin.this, "Email ou Senha Inválidos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //========= ADICIONANDO COMPONENTES AO LAYOUT =========
 
@@ -114,6 +134,7 @@ public class TelaLogin extends AppCompatActivity {
         layoutForm.addView(btnConfirmar);
 
     }
+
 
     private void configurandoTextoDeCadastro() {
         //======= CONFIGURANDO LAYOUT DO LINK DE CADASTRO ======

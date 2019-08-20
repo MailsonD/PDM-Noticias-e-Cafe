@@ -14,48 +14,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <!-- "@style/Theme.AppCompat.Light.NoActionBar" -->
-        <activity android:name=".tela.NavBar">
 
-             <intent-filter>
-             <action android:name="android.intent.action.VIEW" />
+        <service
+            android:name=".rss.MyIntentService"
+            android:exported="false"
+            ></service>
 
-
-             <category android:name="android.intent.category.LAUNCHER"/>
-             </intent-filter>
-        </activity>
-        <activity android:name=".tela.TelaLogin">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity> <!-- <activity android:name=".MainActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <!-- <activity android:name=".tela.TelaCadastro"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <activity android:name=".tela.TelaEditar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".tela.TelaDetalhesNoticia">
+        <activity android:name=".rss.TesteRss">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".tela.TelaLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".tela.TelaDetalhesNoticia">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".tela.TelaCadastro"></activity>
+        <activity android:name=".tela.TelaEditar"></activity>
+        <activity android:name=".tela.TelaPrincipal"></activity>
+        <activity android:name=".tela.TelaNoticia"></activity>
     </application>
 
 </manifest>
