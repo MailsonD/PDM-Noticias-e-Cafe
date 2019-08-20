@@ -13,16 +13,16 @@ import android.widget.TextView;
 
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
+import com.ifpb.noticia_e_cafe.tela.NavBar;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
-<<<<<<< HEAD:app/src/main/java/com/ifpb/noticia_e_cafe/telas/TelaEditar.java
 /**
  * @author Leanderson-Coelho
- * **/
-public class TelaEditar extends AppCompatActivity {
-=======
+ *
+ * */
+
 public class TelaEditar extends NavBar {
->>>>>>> f544ef26b9527f0115a59655e1bfff87582a4847:app/src/main/java/com/ifpb/noticia_e_cafe/tela/TelaEditar.java
+
 
     private LinearLayout layoutInputs;
     private LinearLayout layoutButtons;

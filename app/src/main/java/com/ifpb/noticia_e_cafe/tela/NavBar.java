@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ifpb.noticia_e_cafe.R;
+import com.ifpb.noticia_e_cafe.telas.TelaEditar;
+import com.ifpb.noticia_e_cafe.telas.TelaLogin;
 
 
 //public class NavBar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -127,11 +129,11 @@ public class NavBar extends Activity implements NavigationView.OnNavigationItemS
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == 0){
-            startActivity(new Intent(this,TelaEditar.class));
+            startActivity(new Intent(this, TelaEditar.class));
         } else if (menuItem.getItemId() == 1){
             Toast.makeText(this, "Selecionou o menu 2", Toast.LENGTH_LONG).show();
         } else if (menuItem.getItemId() == 2){
-            startActivity(new Intent(this,TelaLogin.class));
+            startActivity(new Intent(this, TelaLogin.class));
         }
         return false;
     }
