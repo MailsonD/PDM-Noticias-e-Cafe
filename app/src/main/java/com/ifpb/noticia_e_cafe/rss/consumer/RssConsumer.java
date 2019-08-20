@@ -4,6 +4,7 @@ package com.ifpb.noticia_e_cafe.rss.consumer;
 import android.text.Html;
 import android.util.Log;
 
+import com.ifpb.noticia_e_cafe.exception.ConsumerExcpetion;
 import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 
 import org.xmlpull.v1.XmlPullParser;

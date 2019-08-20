@@ -10,9 +10,7 @@ import android.util.Log;
 
 import com.ifpb.noticia_e_cafe.control.NoticiaControl;
 import com.ifpb.noticia_e_cafe.model.entities.Noticia;
-import com.ifpb.noticia_e_cafe.model.interfaces.Dao;
-import com.ifpb.noticia_e_cafe.model.interfaces.NoticiaDao;
-import com.ifpb.noticia_e_cafe.rss.consumer.ConsumerExcpetion;
+import com.ifpb.noticia_e_cafe.exception.ConsumerExcpetion;
 import com.ifpb.noticia_e_cafe.rss.consumer.RssConsumer;
 import com.ifpb.noticia_e_cafe.rss.reciver.RssReceiver;
 

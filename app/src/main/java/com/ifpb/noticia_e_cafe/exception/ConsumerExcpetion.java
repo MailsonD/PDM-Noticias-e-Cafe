@@ -1,4 +1,4 @@
-package com.ifpb.noticia_e_cafe.rss.consumer;
+package com.ifpb.noticia_e_cafe.exception;
 
 
 /**

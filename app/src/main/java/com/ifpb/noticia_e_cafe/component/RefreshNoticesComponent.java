@@ -63,6 +63,7 @@ public class RefreshNoticesComponent extends SwipeRefreshLayout {
 
     private void atualizarNoticias(){
         noticiaAdapter = new NoticiaAdapter(act,noticias);
+        listView.setAdapter(noticiaAdapter);
     }
 
 

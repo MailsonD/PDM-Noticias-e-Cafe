@@ -2,6 +2,8 @@ package com.ifpb.noticia_e_cafe.util;
 
 import android.util.Log;
 
+import com.ifpb.noticia_e_cafe.exception.ConnectionUrlException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -30,12 +32,6 @@ public class CreateConnectionUrl {
         }
     }
 
-    public static class ConnectionUrlException extends Exception{
 
-        public ConnectionUrlException(String msg){
-            super(msg);
-        }
-
-    }
 
 }

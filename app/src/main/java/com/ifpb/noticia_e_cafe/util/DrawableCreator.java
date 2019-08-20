@@ -7,6 +7,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.ifpb.noticia_e_cafe.exception.DrawableCreatorExcpetion;
+
 import java.io.InputStream;
 import java.net.URL;
 
@@ -36,13 +38,7 @@ public class DrawableCreator {
         }
     }
 
-    public static class DrawableCreatorExcpetion extends Exception{
 
-        public DrawableCreatorExcpetion(String msg){
-            super(msg);
-        }
-
-    }
 
 
 }
