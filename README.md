@@ -2,7 +2,7 @@
 **Exercício de fixação**
 
 # docs:
-* [Pasta]() contendo os documentos requisitados na [descrição](https://docs.google.com/document/d/1G0nuHlKZbDRn-N7_wr0muO9VA47POZNvuum36Vpo0sA/edit) da atividade.
+* [Pasta](https://github.com/MailsonD/PDM-Noticias-e-Cafe/tree/master/docs) contendo os documentos requisitados na [descrição](https://docs.google.com/document/d/1G0nuHlKZbDRn-N7_wr0muO9VA47POZNvuum36Vpo0sA/edit) da atividade.
 
 # Equipe:
 * [Leanderson Coelho](https://github.com/Leanderson-Coelho)
