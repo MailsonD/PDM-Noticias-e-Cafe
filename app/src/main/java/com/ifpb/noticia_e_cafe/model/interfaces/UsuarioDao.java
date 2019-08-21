@@ -37,7 +37,7 @@ public class UsuarioDao implements Dao<Usuario> {
     @Override
     public Long salvar(Usuario object) {
         Log.i("APP_INFO", "CONEXAO COM BANCO");
-        //variavel que guarnda os campos da nova tupla
+        //variavel que guarda os campos da nova tupla
         ContentValues valores = new ContentValues();
         //"conexao" com banco
         db = managerDataBase.getWritableDatabase();

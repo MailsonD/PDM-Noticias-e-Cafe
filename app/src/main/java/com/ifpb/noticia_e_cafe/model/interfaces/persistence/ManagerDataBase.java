@@ -28,14 +28,13 @@ public class ManagerDataBase extends SQLiteOpenHelper {
         Log.d("APP_DEBUG", "onCreate DATABASE");
         db.execSQL(CreationScript.scriptOfInitializationUsuario);
         db.execSQL(CreationScript.scriptOfInitializationNoticia);
-//        Log.e("APP_DEBUG", CreationScript.scriptOfInitialization);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try{
             db.execSQL("DROP TABLE IF EXISTS " + TABLES_PERSISTENCE.USUARIO.getTabela());
-//            db.execSQL(CreationScript.scriptOfInitialization);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLES_PERSISTENCE.NOTICIA.getTabela());
         }catch (SQLException e){
             e.printStackTrace();
         }

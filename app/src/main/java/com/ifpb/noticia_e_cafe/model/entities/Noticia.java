@@ -18,8 +18,9 @@ public class Noticia{
     private String decricao;
     private String conteudo;
     private Drawable img;
+    private String urlImg;
 
-    public Noticia(String guid, String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img) {
+    public Noticia(String guid, String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img, String urlImg) {
         this.guid = guid;
         this.siteFonte = siteFonte;
         this.titulo = titulo;
@@ -28,9 +29,10 @@ public class Noticia{
         this.decricao = decricao;
         this.conteudo = conteudo;
         this.img = img;
+        this.urlImg = urlImg;
     }
 
-    public Noticia(String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img) {
+    public Noticia(String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img, String urlImg) {
         this.siteFonte = siteFonte;
         this.titulo = titulo;
         this.link = link;
@@ -38,6 +40,7 @@ public class Noticia{
         this.decricao = decricao;
         this.conteudo = conteudo;
         this.img = img;
+        this.urlImg = urlImg;
     }
 
     public Noticia(String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo) {
@@ -117,30 +120,18 @@ public class Noticia{
         this.siteFonte = siteFonte;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Noticia)) return false;
-        Noticia noticia = (Noticia) o;
-        return getGuid() == noticia.getGuid() &&
-                Objects.equals(getSiteFonte(), noticia.getSiteFonte()) &&
-                Objects.equals(getTitulo(), noticia.getTitulo()) &&
-                Objects.equals(getLink(), noticia.getLink()) &&
-                Objects.equals(getDataPublicacao(), noticia.getDataPublicacao()) &&
-                Objects.equals(getDecricao(), noticia.getDecricao()) &&
-                Objects.equals(getConteudo(), noticia.getConteudo()) &&
-                Objects.equals(getImg(), noticia.getImg());
+    public String getUrlImg() {
+        return urlImg;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getGuid(), getSiteFonte(), getTitulo(), getLink(), getDataPublicacao(), getDecricao(), getConteudo(), getImg());
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
     }
 
     @Override
     public String toString() {
         return "Noticia{" +
-                "guid=" + guid +
+                "guid='" + guid + '\'' +
                 ", siteFonte='" + siteFonte + '\'' +
                 ", titulo='" + titulo + '\'' +
                 ", link='" + link + '\'' +
@@ -148,6 +139,28 @@ public class Noticia{
                 ", decricao='" + decricao + '\'' +
                 ", conteudo='" + conteudo + '\'' +
                 ", img=" + img +
+                ", urlImg='" + urlImg + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Noticia noticia = (Noticia) o;
+        return guid.equals(noticia.guid) &&
+                siteFonte.equals(noticia.siteFonte) &&
+                titulo.equals(noticia.titulo) &&
+                link.equals(noticia.link) &&
+                dataPublicacao.equals(noticia.dataPublicacao) &&
+                decricao.equals(noticia.decricao) &&
+                conteudo.equals(noticia.conteudo) &&
+                img.equals(noticia.img) &&
+                urlImg.equals(noticia.urlImg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guid, siteFonte, titulo, link, dataPublicacao, decricao, conteudo, img, urlImg);
     }
 }

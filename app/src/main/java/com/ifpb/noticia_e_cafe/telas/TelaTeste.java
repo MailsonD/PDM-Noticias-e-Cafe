@@ -1,11 +1,15 @@
 package com.ifpb.noticia_e_cafe.telas;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 
+import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 import com.ifpb.noticia_e_cafe.model.entities.Usuario;
+import com.ifpb.noticia_e_cafe.model.interfaces.NoticiaDao;
 import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
 
 public class TelaTeste extends AppCompatActivity {
@@ -24,24 +28,17 @@ public class TelaTeste extends AppCompatActivity {
         this.layoutMain.setGravity(Gravity.CENTER_VERTICAL);
         setContentView(layoutMain);
 
-        UsuarioDao userDao = new UsuarioDao(this);
-        userDao.salvar(new Usuario("santos", "santos@gmail.com", "244123"));
-//        try {
-//            Log.d("LCS", userDao.buscarPorEmail("novoEmail").toString());
-//        } catch (UsuarioNotFound usuarioNotFound) {
-//            usuarioNotFound.printStackTrace();
-//        }
-//        Log.d("LCS", );
-//        userDao.listar();
-//        try {
-//            Usuario santos = userDao.buscarPorEmail("santos@gmail.com");
-//            santos.setEmail("novoEmail");
-//            int update = userDao.editar(santos);
-//            if(update > 0){
-//                Log.d("LCS", "ATUALIZADO");
-//            }else Log.d("LCS", "NAO ATUALIZADO");
-//        } catch (UsuarioNotFound usuarioNotFound) {
-//            usuarioNotFound.printStackTrace();
-//        }
+//        NoticiaDao noticiaDao = new NoticiaDao(this);
+//        Log.d("APP_DEBUG", "NOVA NOTICIA: "+noticiaDao.salvar(new Noticia(
+//                "3948324932",
+//                "www.tste.com",
+//                "TItulo",
+//                "www.noticia.link.com",
+//                "21/08/2019",
+//                "Descricao da noTicia",
+//                "Conteudo noticia",
+//                null,
+//                "URL noticia")));
+
     }
 }
