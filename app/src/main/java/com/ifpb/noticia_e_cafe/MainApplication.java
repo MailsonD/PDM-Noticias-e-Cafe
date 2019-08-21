@@ -12,8 +12,8 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d("APP_DEBUG","Iniciando aplicação");
-//        sendBroadcast(new Intent(this, RssReceiver.class));
-//        startService(new Intent(this, RssReceiver.class));
+        sendBroadcast(new Intent(this, RssReceiver.class));
+        startService(new Intent(this, RssReceiver.class));
 
     }
 

@@ -1,8 +1,12 @@
 package com.ifpb.noticia_e_cafe.telas;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,28 +14,76 @@ import android.widget.ScrollView;
 
 import com.ifpb.noticia_e_cafe.R;
 import com.ifpb.noticia_e_cafe.component.NewsDetailsComponent;
+import com.ifpb.noticia_e_cafe.exception.DrawableCreatorExcpetion;
+import com.ifpb.noticia_e_cafe.model.entities.Noticia;
+import com.ifpb.noticia_e_cafe.model.interfaces.NoticiaDao;
+import com.ifpb.noticia_e_cafe.util.DrawableCreator;
 
-public class TelaDetalhesNoticia extends AppCompatActivity {
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class TelaDetalhesNoticia extends NavBar {
+
+
+    private Noticia noticia;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        noticia = (Noticia) intent.getSerializableExtra("noticia");
+        imageView = new ImageView(this);
+
         ScrollView scrollView = new ScrollView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         scrollView.setLayoutParams(layoutParams);
-        String conteudo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus leo id dignissim mollis. Aenean consequat, ligula eget blandit pellentesque, augue eros sodales neque, vitae volutpat neque mauris non nibh. Aenean ultricies urna in sodales molestie. Sed ac commodo enim, nec scelerisque ligula. Vivamus dignissim nulla urna, nec faucibus augue consectetur sit amet. Suspendisse sed placerat sem, ac placerat diam. Etiam arcu sem, porta non eros ac, pulvinar volutpat sapien. Etiam porttitor ut nisl vel placerat. Suspendisse hendrerit in risus in condimentum.\n" +
-                "\n" +
-                "Etiam in gravida nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent maximus, neque in gravida lacinia, odio dolor feugiat urna, id scelerisque diam ante ac erat. Maecenas vestibulum non ante quis pulvinar. Vestibulum id ligula in velit interdum lacinia quis non sapien. Proin erat libero, maximus non eleifend in, feugiat a felis. Quisque lacinia enim vitae libero dapibus pretium.\n" +
-                "\n" +
-                "Curabitur at lectus dictum lectus bibendum tempor eu eget sapien. Pellentesque sagittis dictum urna, blandit congue nulla pharetra non. Nam tincidunt viverra sem, nec pretium metus elementum a. Duis vel maximus purus, ac feugiat massa. In mattis ante neque, eu porttitor mi lobortis id. Vestibulum tincidunt dignissim arcu, ut cursus metus mattis id. Donec bibendum, arcu a aliquet dapibus, mauris nunc vehicula nisl, vitae scelerisque sem purus id quam.\n" +
-                "\n" +
-                "Curabitur eros lorem, imperdiet sed tellus vel, commodo dignissim felis. Sed quis sapien dui. Praesent eros risus, scelerisque ac lacus non, imperdiet rutrum nunc. Fusce condimentum enim vel enim posuere, sed dapibus erat tempor. Aenean mi elit, tincidunt non dui efficitur, consequat rhoncus eros. Aliquam ullamcorper faucibus hendrerit. Duis faucibus commodo lacus porta rhoncus. In hac habitasse platea dictumst. Vestibulum vitae velit vel lorem porttitor varius at quis nulla. Nulla a dui sapien.";
-        ImageView capaNoticia = new ImageView(this);
-        capaNoticia.setImageResource(R.drawable.logo);
-        NewsDetailsComponent newsDetailsComponent = new NewsDetailsComponent(this, "Este é o titulo da notícia para que eu teste esta bagaça", conteudo, "01/02/1998", "https://www.lipsum.com/feed/html", capaNoticia, getWindowManager());
+
+        NewsDetailsComponent newsDetailsComponent = new NewsDetailsComponent(this, noticia.getTitulo(), noticia.getConteudo(), noticia.getDataPublicacao(), noticia.getSiteFonte(), imageView, getWindowManager());
         scrollView.addView(newsDetailsComponent);
+        setDynamicContent(scrollView);
 
-        setContentView(scrollView);
+        new GetImageInBackground().execute();
 
+    }
+
+    public void getImage(){
+        try {
+            noticia.setImg(
+                    DrawableCreator.
+                            gerarDrawable(
+                                    new URL(noticia.getUrlImg()
+                                    )
+                            )
+            );
+        } catch (Exception e){
+            Log.e("APP_ERROR","Não foi possível pegar a imagem da notícia");
+        }
+    }
+
+    private class GetImageInBackground extends AsyncTask<Integer,Void,String>{
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(TelaDetalhesNoticia.this);
+
+            progressDialog.setMessage("Carregando Noticia");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+            getImage();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            imageView.setImageDrawable(noticia.getImg());
+            progressDialog.dismiss();
+            super.onPostExecute(s);
+        }
     }
 }

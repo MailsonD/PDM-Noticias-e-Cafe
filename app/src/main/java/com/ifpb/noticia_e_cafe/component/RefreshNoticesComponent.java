@@ -2,12 +2,16 @@ package com.ifpb.noticia_e_cafe.component;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ifpb.noticia_e_cafe.component.adapter.NoticiaAdapter;
 import com.ifpb.noticia_e_cafe.model.entities.Noticia;
+import com.ifpb.noticia_e_cafe.telas.TelaDetalhesNoticia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +58,22 @@ public class RefreshNoticesComponent extends SwipeRefreshLayout {
         listView = new ListView(getContext());
         listView.setAdapter(noticiaAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Noticia noticia = noticias.get(position);
+                Intent intent = new Intent(getContext(), TelaDetalhesNoticia.class);
+                intent.putExtra("noticia",noticia);
+                getContext().startActivity(intent);
+
+            }
+
+
+        });
         addView(listView);
+
+
     }
 
     @Override

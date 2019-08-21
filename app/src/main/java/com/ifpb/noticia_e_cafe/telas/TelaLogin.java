@@ -89,7 +89,7 @@ public class TelaLogin extends AppCompatActivity {
         );
 
         imageView = new ImageView(this);
-        imageView.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.logo));
+        imageView.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.logo2));
 
         layoutImage.addView(imageView);
     }

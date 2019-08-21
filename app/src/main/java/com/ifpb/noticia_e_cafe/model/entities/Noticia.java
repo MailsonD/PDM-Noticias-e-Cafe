@@ -2,13 +2,14 @@ package com.ifpb.noticia_e_cafe.model.entities;
 
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @author Mailson
  * @mail mailssondennis@gmail.com
  */
-public class Noticia{
+public class Noticia implements Serializable {
 
     private String guid;
     private String siteFonte;
@@ -17,7 +18,7 @@ public class Noticia{
     private String dataPublicacao;
     private String decricao;
     private String conteudo;
-    private Drawable img;
+    private transient Drawable img;
     private String urlImg;
 
     public Noticia(String guid, String siteFonte, String titulo, String link, String dataPublicacao, String decricao, String conteudo, Drawable img, String urlImg) {
