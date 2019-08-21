@@ -1,14 +1,12 @@
-package com.ifpb.noticia_e_cafe.tela;
+package com.ifpb.noticia_e_cafe.telas;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -105,9 +103,7 @@ public class TelaLogin extends AppCompatActivity {
 
         //=========== ADICIONANDO EVENTOS ONCLICK ==============
 
-        btnConfirmar.setOnClickAction(
-                (v) -> Log.d("DEBUGANDO_SAPORRA","MeuBotão")
-        );
+        btnConfirmar.setOnClickAction(v -> startActivity(new Intent(this,TelaPrincipal.class)));
 
         //========= ADICIONANDO COMPONENTES AO LAYOUT =========
 

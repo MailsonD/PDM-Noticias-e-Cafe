@@ -1,8 +1,10 @@
 package com.ifpb.noticia_e_cafe.model.interfaces.persistence;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * @author Leanderson Coelho
@@ -14,7 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class ManagerDataBase extends SQLiteOpenHelper {
     public static final String NOME_BANCO = "noticiaEcafe.db";
-    public static final int VERSAO = 1;
+    public static final int VERSAO = 5;
 
     public ManagerDataBase(Context context){
         super(context,NOME_BANCO, null, VERSAO);
@@ -23,13 +25,20 @@ public class ManagerDataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CreationScript.scriptOfInitialization);
-
+        Log.d("APP_DEBUG", "onCreate DATABASE");
+        db.execSQL(CreationScript.scriptOfInitializationUsuario);
+        db.execSQL(CreationScript.scriptOfInitializationNoticia);
+//        Log.e("APP_DEBUG", CreationScript.scriptOfInitialization);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLES_PERSISTENCE.USUARIO.getTabela());
-        onCreate(db);
+        try{
+            db.execSQL("DROP TABLE IF EXISTS " + TABLES_PERSISTENCE.USUARIO.getTabela());
+//            db.execSQL(CreationScript.scriptOfInitialization);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        Log.d("APP_DEBUG", "onUpdate DATABASE");
     }
 }

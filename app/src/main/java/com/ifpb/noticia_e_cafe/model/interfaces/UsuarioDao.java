@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.ifpb.noticia_e_cafe.exception.UsuarioNotFound;
-import com.ifpb.noticia_e_cafe.model.Usuario;
+import com.ifpb.noticia_e_cafe.model.entities.Usuario;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.ManagerDataBase;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.TABLES_PERSISTENCE;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.UsuarioTable;
@@ -36,7 +36,7 @@ public class UsuarioDao implements Dao<Usuario> {
      */
     @Override
     public Long salvar(Usuario object) {
-        Log.d("LCS", "CONEXAO");
+        Log.i("APP_INFO", "CONEXAO COM BANCO");
         //variavel que guarnda os campos da nova tupla
         ContentValues valores = new ContentValues();
         //"conexao" com banco
@@ -44,11 +44,11 @@ public class UsuarioDao implements Dao<Usuario> {
         valores.put(UsuarioTable.NOME.getColumnName(), object.getNome());
         valores.put(UsuarioTable.EMAIL.getColumnName(), object.getEmail());
         valores.put(UsuarioTable.SENHA.getColumnName(), object.getSenha());
-        Log.d("LCS", "INSERINDO");
+        Log.i("APP_INFO", "INSERINDO DADOS");
         Long id = db.insert(TABLES_PERSISTENCE.USUARIO.getTabela(), null, valores);
         //fechando "conexao"
         db.close();
-        Log.d("LCS", id.toString());
+        Log.i("APP_INFO", id.toString());
         //retornando o id do novo elemento
         return id;
     }
@@ -84,11 +84,10 @@ public class UsuarioDao implements Dao<Usuario> {
         //SELEÇÃO da consulta cláusula WHERE
         String where = new String(UsuarioTable.ID.getColumnName()+" = ?");
 
-        Log.d("LCS", "CONEXAO");
-        db = managerDataBase.getWritableDatabase();
+        Log.i("APP_INFO", "CONEXAO COM BANCO");        db = managerDataBase.getWritableDatabase();
 //        Cursor cursor = db.query(TABLES_PERSISTENCE.USUARIO.getTabela(), null, where, argumentos, null, null, null);
         int update = db.update(TABLES_PERSISTENCE.USUARIO.getTabela(), valores, where, argumentos);
-        Log.d("LCS", "FECHANDO CONEXAO");
+        Log.i("APP_INFO", "FECHANDO CONEXAO");
         db.close();
         return update;
     }
@@ -101,20 +100,18 @@ public class UsuarioDao implements Dao<Usuario> {
     public List<Usuario> listar() {
         List<Usuario> usuarios = new ArrayList<>();
 
-        Log.d("LCS", "CONEXAO");
-        db = managerDataBase.getWritableDatabase();
+        Log.i("APP_INFO", "CONEXAO COM BANCO");        db = managerDataBase.getWritableDatabase();
         Cursor cursor = db.query(TABLES_PERSISTENCE.USUARIO.getTabela(), null, null, null, null, null, null);
 
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             usuarios.add(fillUser(cursor));
-            Log.d("LCS", fillUser(cursor).toString());
             cursor.moveToNext();
         }
-        Log.d("LCS", "FECHANDO CONEXAO");
+        Log.i("APP_INFO", "FECHANDO CONEXAO");
         cursor.close();
         db.close();
-        Log.d("LCS", "BUSCA DE TODOS OS USUARIOS");
+        Log.i("APP_INFO", "BUSCANDO TODOS OS USUÁRIOS");
         return usuarios;
     }
 
@@ -141,18 +138,17 @@ public class UsuarioDao implements Dao<Usuario> {
         //SELEÇÃO da consulta cláusula WHERE
         String where = new String("email = ?");
 
-        Log.d("LCS", "CONEXAO");
-        db = managerDataBase.getWritableDatabase();
+        Log.i("APP_INFO", "CONEXAO COM BANCO");        db = managerDataBase.getWritableDatabase();
         Cursor cursor = db.query(TABLES_PERSISTENCE.USUARIO.getTabela(), columns, where, argumentos, null, null, null);
 
         if(cursor.moveToFirst()){
-            Log.d("LCS", "BUSCA: Usuario Encontrado");
+            Log.i("APP_INFO", "BUSCA: USUÁRIO ENCONTRADO");
             Usuario usuario = fillUser(cursor);
             cursor.close();
             db.close();
             return usuario;
         }else{
-            Log.d("LCS", "Busca: Usuário não encontrado");
+            Log.i("APP_INFO", "BUSCA: USUÁRIO NÃO ENCONTRADO");
             cursor.close();
             db.close();
             throw new UsuarioNotFound();
