@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.ifpb.noticia_e_cafe.component.adapter.NoticiaAdapter;
 import com.ifpb.noticia_e_cafe.model.entities.Noticia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,8 +26,18 @@ public class RefreshNoticesComponent extends SwipeRefreshLayout {
     private List<Noticia> noticias;
     private NoticiaAdapter noticiaAdapter;
     private ListView listView;
-    private LayoutParams layoutParams;
+    private SwipeRefreshLayout.LayoutParams layoutParams;
     private Activity act;
+
+    public RefreshNoticesComponent(@NonNull Activity activity){
+        super(activity);
+        this.act = activity;
+        this.layoutParams = new SwipeRefreshLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT
+        );
+        noticias = new ArrayList<>();
+        init();
+    }
 
     public RefreshNoticesComponent(@NonNull Activity activity, LayoutParams layoutParams, List<Noticia> noticias) {
         super(activity);
@@ -40,11 +51,16 @@ public class RefreshNoticesComponent extends SwipeRefreshLayout {
         setLayoutParams(layoutParams);
         noticiaAdapter = new NoticiaAdapter(act,noticias);
 
-        listView = new ListView(act);
+        listView = new ListView(getContext());
         listView.setAdapter(noticiaAdapter);
 
         addView(listView);
+    }
 
+    @Override
+    public void setLayoutParams(LayoutParams layoutParams) {
+        super.setLayoutParams(layoutParams);
+        this.layoutParams = layoutParams;
     }
 
     public List<Noticia> getNoticias() {

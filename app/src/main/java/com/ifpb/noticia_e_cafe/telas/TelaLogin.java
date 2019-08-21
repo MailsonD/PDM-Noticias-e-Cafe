@@ -19,7 +19,7 @@ import com.ifpb.noticia_e_cafe.R;
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
 import com.ifpb.noticia_e_cafe.control.UserControl;
-import com.ifpb.noticia_e_cafe.model.Usuario;
+import com.ifpb.noticia_e_cafe.model.entities.Usuario;
 import com.ifpb.noticia_e_cafe.util.DeviceProperties;
 
 public class TelaLogin extends AppCompatActivity {
@@ -41,13 +41,6 @@ public class TelaLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
-        boolean autenticado = sharedPreferences.getBoolean("logado", false);
-        if(autenticado){
-            startActivity(new Intent(this, TelaPrincipal.class));
-        }
-
 
         //========== CONFIGURANDO LAYOUT PRINCIPAL =============
         layoutMain = new LinearLayout(this);
@@ -74,9 +67,16 @@ public class TelaLogin extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-
-
+        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
+        boolean autenticado = sharedPreferences.getBoolean("logado", false);
+        if(autenticado){
+            startActivity(new Intent(this, TelaPrincipal.class));
+        }
+    }
 
     private void configurandoImagem() {
         //======== CONFIGURANDO LAYOUT DA IMAGEM =========
