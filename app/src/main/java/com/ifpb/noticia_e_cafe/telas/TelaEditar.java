@@ -1,6 +1,8 @@
 package com.ifpb.noticia_e_cafe.telas;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -63,6 +65,7 @@ public class TelaEditar extends NavBar {
 
         this.construirLayoutInputs();
         this.construirLayoutBotoes();
+        this.inserirValoresInputs();
 
         this.layoutMain.addView(nomeTela);
         this.layoutMain.addView(layoutInputs);
@@ -98,7 +101,7 @@ public class TelaEditar extends NavBar {
         cancelar.setOnClickAction(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(TelaEditar.this, TelaLogin.class));
             }
         });
     }
@@ -140,6 +143,11 @@ public class TelaEditar extends NavBar {
 
         this.layoutButtons.addView(cancelar);
         this.layoutButtons.addView(salvar);
+    }
 
+    private void inserirValoresInputs() {
+        SharedPreferences sh = this.getSharedPreferences("authenticatedUser", Context.MODE_PRIVATE);
+        this.nome.setValue(sh.getString("nome", null));
+        this.email.setValue(sh.getString("email", null));
     }
 }
