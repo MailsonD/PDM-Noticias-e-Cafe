@@ -42,13 +42,6 @@ public class TelaLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
-        boolean autenticado = sharedPreferences.getBoolean("logado", false);
-        if(autenticado){
-            startActivity(new Intent(this, TelaPrincipal.class));
-        }
-
-
         //========== CONFIGURANDO LAYOUT PRINCIPAL =============
         layoutMain = new LinearLayout(this);
         layoutMain.setLayoutParams(new LinearLayout.LayoutParams(
@@ -74,9 +67,16 @@ public class TelaLogin extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-
-
+        SharedPreferences sharedPreferences = getSharedPreferences("authenticatedUser", MODE_PRIVATE);
+        boolean autenticado = sharedPreferences.getBoolean("logado", false);
+        if(autenticado){
+            startActivity(new Intent(this, TelaPrincipal.class));
+        }
+    }
 
     private void configurandoImagem() {
         //======== CONFIGURANDO LAYOUT DA IMAGEM =========

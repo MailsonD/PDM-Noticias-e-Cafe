@@ -89,6 +89,7 @@ public class RssConsumer {
                             String html = xpp.nextText();
                             //Geramos a imagem da notícia a partidir do conteúdo
                             String urlImg = encontraImg(html);
+                            noticia.setUrlImg(urlImg);
                             if(urlImg != null){
                                 noticia.setImg(gerarDrawable(new URL(urlImg)));
                             }else{

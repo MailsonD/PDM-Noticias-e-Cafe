@@ -128,7 +128,7 @@ public class ConsumeRssService extends Service {
         Intent intent = new Intent(this, RssReceiver.class);
         PendingIntent intencaoAgendada = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarme = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarme.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + MINUTE,intencaoAgendada);
+        alarme.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + MINUTE*5,intencaoAgendada);
         Log.d("APP_DEBUG","Agendando servico");
     }
 
