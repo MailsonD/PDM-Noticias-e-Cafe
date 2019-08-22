@@ -1,7 +1,6 @@
 package com.ifpb.noticia_e_cafe.telas;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -17,8 +16,8 @@ import android.widget.Toast;
 import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
 import com.ifpb.noticia_e_cafe.control.UserControl;
-import com.ifpb.noticia_e_cafe.model.Usuario;
-import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
+import com.ifpb.noticia_e_cafe.model.entities.Usuario;
+import com.ifpb.noticia_e_cafe.model.interfaces.ExistingUserException;
 
 public class TelaCadastro extends AppCompatActivity {
     private LinearLayout linearLayoutButtons;
@@ -81,7 +80,12 @@ public class TelaCadastro extends AppCompatActivity {
                 }else{
                     UserControl userControl = new UserControl(TelaCadastro.this);
                     Usuario usuario = new Usuario(nome.getValue(), email.getValue(), senha.getValue());
-                    userControl.cadastrar(usuario);
+                    try {
+                        userControl.cadastrar(usuario);
+                    } catch (ExistingUserException e) {
+                        Toast.makeText(TelaCadastro.this, "Email já cadastrado!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     startActivity(new Intent(TelaCadastro.this,TelaLogin.class));
                     Toast.makeText(TelaCadastro.this, "Cadastro Realizado!", Toast.LENGTH_SHORT).show();
                     finish();

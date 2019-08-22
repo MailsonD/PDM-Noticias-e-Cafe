@@ -25,32 +25,42 @@ public class UsuarioDao implements Dao<Usuario> {
     private SQLiteDatabase db;
     private ManagerDataBase managerDataBase;
 
-    public UsuarioDao(Context context){
+    public UsuarioDao(Context context) {
         managerDataBase = new ManagerDataBase(context);
     }
 
     /**
      * Adiciona um novo usuário ao banco de dados.
+     *
      * @param object Novo usuário que será adicionado
      * @return ID do novo Usuário.
      */
     @Override
-    public Long salvar(Usuario object) {
-        Log.i("APP_INFO", "CONEXAO COM BANCO");
-        //variavel que guarda os campos da nova tupla
-        ContentValues valores = new ContentValues();
-        //"conexao" com banco
-        db = managerDataBase.getWritableDatabase();
-        valores.put(UsuarioTable.NOME.getColumnName(), object.getNome());
-        valores.put(UsuarioTable.EMAIL.getColumnName(), object.getEmail());
-        valores.put(UsuarioTable.SENHA.getColumnName(), object.getSenha());
-        Log.i("APP_INFO", "INSERINDO DADOS");
-        Long id = db.insert(TABLES_PERSISTENCE.USUARIO.getTabela(), null, valores);
-        //fechando "conexao"
-        db.close();
-        Log.i("APP_INFO", id.toString());
-        //retornando o id do novo elemento
-        return id;
+    public Long salvar(Usuario object) throws ExistingUserException {
+        Log.i("APP_INFO", "VALIDAÇÃO DO USUÁRIO");
+        if (this.buscarPorEmail(object.getEmail()) == null) {
+            Log.i("APP_INFO", "CONEXAO COM BANCO");
+            //variavel que guarda os campos da nova tupla
+            ContentValues valores = new ContentValues();
+            //"conexao" com banco
+            db = managerDataBase.getWritableDatabase();
+            valores.put(UsuarioTable.NOME.getColumnName(), object.getNome());
+            valores.put(UsuarioTable.EMAIL.getColumnName(), object.getEmail());
+            valores.put(UsuarioTable.SENHA.getColumnName(), object.getSenha());
+            Log.i("APP_INFO", "INSERINDO DADOS");
+            Long id = db.insert(TABLES_PERSISTENCE.USUARIO.getTabela(), null, valores);
+            //fechando "conexao"
+            Log.i("APP_INFO", "FECHANDO CONEXAO COM BANCO");
+            db.close();
+            Log.i("APP_INFO", id.toString());
+            //retornando o id do novo elemento
+            return id;
+        } else{
+            Log.e("APP_ERROR", "USUÁRIO JÁ CADASTRADO");
+            throw new ExistingUserException();
+        }
+
+
     }
 
     /**
@@ -65,6 +75,7 @@ public class UsuarioDao implements Dao<Usuario> {
     /**
      * Método responsável por atualizar os dados do usuário já cadastrado.
      * Somente os dados como [EMAIL, NOME, SENHA] poderão ser atualizados.
+     *
      * @param object Usuário que será atualizado
      * @return Quantidade de linhas afetadas.
      */
@@ -82,9 +93,10 @@ public class UsuarioDao implements Dao<Usuario> {
         };
 
         //SELEÇÃO da consulta cláusula WHERE
-        String where = new String(UsuarioTable.ID.getColumnName()+" = ?");
+        String where = new String(UsuarioTable.ID.getColumnName() + " = ?");
 
-        Log.i("APP_INFO", "CONEXAO COM BANCO");        db = managerDataBase.getWritableDatabase();
+        Log.i("APP_INFO", "CONEXAO COM BANCO");
+        db = managerDataBase.getWritableDatabase();
 //        Cursor cursor = db.query(TABLES_PERSISTENCE.USUARIO.getTabela(), null, where, argumentos, null, null, null);
         int update = db.update(TABLES_PERSISTENCE.USUARIO.getTabela(), valores, where, argumentos);
         Log.i("APP_INFO", "FECHANDO CONEXAO");
@@ -94,17 +106,19 @@ public class UsuarioDao implements Dao<Usuario> {
 
     /**
      * Método responsável por listar todos os usuários cadastrados
+     *
      * @return Usuários cadastrados no sistema
      */
     @Override
     public List<Usuario> listar() {
         List<Usuario> usuarios = new ArrayList<>();
 
-        Log.i("APP_INFO", "CONEXAO COM BANCO");        db = managerDataBase.getWritableDatabase();
+        Log.i("APP_INFO", "CONEXAO COM BANCO");
+        db = managerDataBase.getWritableDatabase();
         Cursor cursor = db.query(TABLES_PERSISTENCE.USUARIO.getTabela(), null, null, null, null, null, null);
 
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             usuarios.add(fillUser(cursor));
             cursor.moveToNext();
         }
@@ -117,11 +131,19 @@ public class UsuarioDao implements Dao<Usuario> {
 
     /**
      * Método responsável por buscar um usuário no banco de dados a partir do email
+     *
      * @param email Usado para conferir se é o usuário buscado
      * @return Um usuário, caso seja encontrado, caso não seja encontrado é lançado uma exceção {@link UsuarioNotFound}
      * @throws UsuarioNotFound
      */
-    public Usuario buscarPorEmail(String email) throws UsuarioNotFound {
+    public Usuario buscarPorEmailOrThrow(String email) throws UsuarioNotFound {
+        Usuario u = this.buscarPorEmail(email);
+        if (u != null) return u;
+        else throw new UsuarioNotFound();
+
+    }
+
+    private Usuario buscarPorEmail(String email) {
         //codigo referente a cláusula 'SELECT' do sql
         String[] columns = new String[]{
                 UsuarioTable.ID.getColumnName(),
@@ -132,31 +154,35 @@ public class UsuarioDao implements Dao<Usuario> {
 
         //Argumentos usados na consulta
         String[] argumentos = new String[]{
-            email
+                email
         };
 
         //SELEÇÃO da consulta cláusula WHERE
         String where = new String("email = ?");
 
-        Log.i("APP_INFO", "CONEXAO COM BANCO");        db = managerDataBase.getWritableDatabase();
+        Log.i("APP_INFO", "CONEXAO COM BANCO");
+        db = managerDataBase.getWritableDatabase();
         Cursor cursor = db.query(TABLES_PERSISTENCE.USUARIO.getTabela(), columns, where, argumentos, null, null, null);
 
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             Log.i("APP_INFO", "BUSCA: USUÁRIO ENCONTRADO");
             Usuario usuario = fillUser(cursor);
             cursor.close();
             db.close();
+            Log.i("APP_INFO", "FECHANDO CONEXAO COM BANCO");
             return usuario;
-        }else{
+        } else {
             Log.i("APP_INFO", "BUSCA: USUÁRIO NÃO ENCONTRADO");
             cursor.close();
             db.close();
-            throw new UsuarioNotFound();
+            Log.i("APP_INFO", "FECHANDO CONEXAO COM BANCO");
+            return null;
         }
     }
 
     /**
      * Instância um novo usuário a partir da busca do mesmo pelo email
+     *
      * @param cursor Obtido na função de busca do usuário
      * @return Usuário que tem o mesmo email passado na busca.
      */

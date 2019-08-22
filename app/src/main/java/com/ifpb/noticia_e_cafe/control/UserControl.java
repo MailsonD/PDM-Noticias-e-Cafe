@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.ifpb.noticia_e_cafe.exception.UsuarioNotFound;
 import com.ifpb.noticia_e_cafe.model.entities.Usuario;
+import com.ifpb.noticia_e_cafe.model.interfaces.ExistingUserException;
 import com.ifpb.noticia_e_cafe.model.interfaces.UsuarioDao;
 
 public class UserControl {
@@ -18,7 +19,7 @@ public class UserControl {
     }
     public Usuario login(Usuario u){
         try {
-            Usuario usuario = usuarioDao.buscarPorEmail(u.getEmail());
+            Usuario usuario = usuarioDao.buscarPorEmailOrThrow(u.getEmail());
             if (usuario.getSenha().equals(u.getSenha())){
                 SharedPreferences.Editor editor = context.getSharedPreferences("authenticatedUser", Context.MODE_PRIVATE).edit();
                 editor.putBoolean("logado", true);
@@ -44,7 +45,7 @@ public class UserControl {
         editor.apply();
     }
 
-    public Long cadastrar(Usuario u){
+    public Long cadastrar(Usuario u) throws ExistingUserException {
         Usuario usuario = new Usuario(u.getNome(), u.getEmail(), u.getSenha());
         return usuarioDao.salvar(usuario);
     }
