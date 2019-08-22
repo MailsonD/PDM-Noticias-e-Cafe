@@ -53,7 +53,7 @@ public class InputField extends LinearLayout {
     public String getValue(){
         return editText.getText().toString();
     }
-
+    public void setValue(String value){editText.setText(value);}
 
 
 }

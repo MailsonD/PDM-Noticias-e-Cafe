@@ -3,6 +3,8 @@ package com.ifpb.noticia_e_cafe.telas;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -47,18 +49,21 @@ public class TelaPrincipal extends NavBar {
 
         new BuscarNoticiasEmBackground().execute();
 
-
-        noticesComponent.setOnRefreshListener(() -> {
-            buscarNoticias();
-            noticesComponent.setNoticias(noticias);
-        });
+        noticesComponent.setOnRefreshListener(this::refreshNoticias);
 
         mainLayout.addView(noticesComponent);
         setDynamicContent(mainLayout);
     }
 
+
+
     private void buscarNoticias() {
         noticias = noticiaControl.listar();
+    }
+
+    private void refreshNoticias(){
+        RefreshNoticiasEmBackground refreshing = new RefreshNoticiasEmBackground();
+        refreshing.execute();
     }
 
     @Override
@@ -94,4 +99,22 @@ public class TelaPrincipal extends NavBar {
             super.onPostExecute(integer);
         }
     }
+
+    private class RefreshNoticiasEmBackground extends AsyncTask<Integer,Void,String>{
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+            Log.d("APP_DEBUG","ATUALIZANDO");
+            buscarNoticias();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            noticesComponent.setNoticias(noticias);
+            noticesComponent.setRefreshing(false);
+        }
+    }
+
 }

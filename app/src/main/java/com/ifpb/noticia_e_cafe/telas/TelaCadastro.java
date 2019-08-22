@@ -17,7 +17,7 @@ import com.ifpb.noticia_e_cafe.component.ButtonComponent;
 import com.ifpb.noticia_e_cafe.component.InputField;
 import com.ifpb.noticia_e_cafe.control.UserControl;
 import com.ifpb.noticia_e_cafe.model.entities.Usuario;
-import com.ifpb.noticia_e_cafe.model.interfaces.ExistingUserException;
+import com.ifpb.noticia_e_cafe.exception.ExistingUserException;
 
 public class TelaCadastro extends AppCompatActivity {
     private LinearLayout linearLayoutButtons;

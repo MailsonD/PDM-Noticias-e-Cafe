@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.ifpb.noticia_e_cafe.exception.ExistingUserException;
 import com.ifpb.noticia_e_cafe.exception.UsuarioNotFound;
 import com.ifpb.noticia_e_cafe.model.entities.Usuario;
 import com.ifpb.noticia_e_cafe.model.interfaces.persistence.ManagerDataBase;

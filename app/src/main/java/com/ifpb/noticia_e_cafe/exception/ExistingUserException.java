@@ -1,4 +1,4 @@
-package com.ifpb.noticia_e_cafe.model.interfaces;
+package com.ifpb.noticia_e_cafe.exception;
 
 public class ExistingUserException extends Exception {
     public ExistingUserException(){
